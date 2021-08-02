@@ -28,23 +28,23 @@ def attendance(request):
         data = [[(x[:-1]),x[-1]] for x in data]
         data_set=[]
         all_students = Student.objects.filter(uid__in=[x[0] for x in data])
-        for student in all_students:
+        for index,student in enumerate(all_students):
             record = [x for x in data if student.uid==x[0]][0]
             record.insert(0,student.name) 
             if record[-1]=='p':record[-1] = 'Present'
             if record[-1]=='a':record[-1] = 'Absent'
             if record[-1]=='l':record[-1] = 'Late' 
             additional=[incoming_teacher,incoming_standard,incoming_class,incoming_subject]
-            record=additional+[record[0],record[-1]]
+            record= [index+1]+ additional+[record[0],record[-1]]
             data_set.append(record)
             print(record)
 
-        header = ['Teacher','Standard','Class','Subject','Student Name','Attendance Status']
+        header = ['Index','Teacher','Standard','Class','Subject','Student Name','Attendance Status']
         df = pd.DataFrame(data=data_set,columns=header)
         checkfolder()
         filename = str(datetime.now().strftime("%m-%d-%Y-%H-%M-%S"))+'.csv'
         file_path = os.path.join(report_folder,filename)
-        df.to_csv(file_path)
+        df.to_csv(file_path,index=False)
 
 
         return render(request, 'root/completion.html',{'download_url':filename})

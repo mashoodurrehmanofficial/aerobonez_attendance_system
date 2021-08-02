@@ -187,3 +187,8 @@ df = pd.read_csv(standard_class_studentname).values.tolist()
 # x=(Student.objects.filter(classlist__name='CEMPAKA',classlist__uid='TINGKATAN 5'))
 
 # print(len(x))
+
+x = [ 1,2,'42']
+
+for index,x in enumerate(x):
+    print(x)
