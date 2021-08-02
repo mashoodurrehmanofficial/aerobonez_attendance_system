@@ -80,7 +80,7 @@ def index(request):
         students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
         
         
-        students = [[x.name,x.uid] for x in students]
+        students = [[x.name,x.uid,index+1] for index,x in enumerate(students)]
         ids = [int(x[-1]) for x in students]
         print(students)
 
