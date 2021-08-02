@@ -1,0 +1,125 @@
+{% extends 'base.html' %}v
+{% block 'mainbody' %}
+ 
+
+<br>
+
+<button id="mark_all_present" class="btn">Mark all Present</button> 
+
+
+<div style="margin:10px  200px" >
+
+
+    <form action="/attendance" method="POST"> {% csrf_token %}
+    <table>
+        <thead>
+          <tr>
+              <th style="width:70% !important">Name</th>
+              <th>Present</th>
+              <th>Late</th>
+              <th>Absent</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+            {% for student in students %}
+            
+            
+                      <tr >
+                        <td style="width:70% !important;padding-left: 10px !important;">{{student.0}}</td>
+                        
+                         
+                        <td style="text-align: center !important;">
+                            
+                                <p>
+                                  <label>
+                                    <input data-code="P" class="with-gap {{student.1}}p" name="{{student.1}}" id="{{student.1}}p" type="radio"   />
+                                    <span></span>
+                                  </label>
+                                </p>
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p>
+                                <label>
+                                  <input  data-code="L" class="with-gap {{student.1}}l" name="{{student.1}}" id="{{student.1}}l" type="radio"   />
+                                  <span></span>
+                                </label>
+                              </p>
+                        </td>
+                        <td style="text-align: center !important;">
+                            <p>
+                              <label>
+                                <input  data-code="A" class="with-gap {{student.1}}a" name="{{student.1}}" id="{{student.1}}a" type="radio"   />
+                                <span></span>
+                              </label>
+                            </p> 
+                        </td> 
+                      </tr>  
+            {% endfor %}
+        </tbody>
+      </table>
+      <br>
+      <input type="text" name="teacher" id="{{teacher}}" value="{{teacher}}" style="width:1px ; height:1px !important"> 
+      <input type="text" name="standard" id="{{standard}}" value="{{standard}}" style="width:1px ; height:1px !important"> 
+      <input type="text" name="class" id="{{class}}" value="{{class}}" style="width:1px ; height:1px !important"> 
+      <input type="text" name="subject" id="{{subject}}" value="{{subject}}" style="width:1px ; height:1px !important"> 
+      <input type="text" name="data" id="data" style="width:1px ; height:1px !important">
+      <button class="btn" type="submit">Submit</button>
+ </form>
+
+
+
+
+</div>
+
+
+<script>
+
+var list = []
+$('form').submit(function(e){
+    var ids = "{{ids}}".replace('[','').replace(']','').split(',') 
+    if($('.with-gap:checked').length<ids.length){
+        alert("Please fill the entire Attendance Sheet !")
+        e.preventDefault() 
+    }
+    else{ 
+            list=[]
+            var elems = $('.with-gap:checked')
+            for(var i=0;i<elems.length;i++){
+                var class_names = elems[i].className.split(/\s+/)[1]
+                list.push(class_names)
+            }
+            $('#data').val(list)     
+    }
+})
+
+
+
+
+
+
+
+
+</script>
+
+
+<script>
+ 
+$('#mark_all_present').click(function(){
+    var elems = $('.with-gap')
+            for(var i=0;i<elems.length;i++){
+                var code = elems[i].getAttribute("data-code")
+                if(code=='P'){
+                    $('input[data-code="P"]').attr('checked',true)
+                }
+            }
+})
+  
+ 
+
+
+</script>
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}

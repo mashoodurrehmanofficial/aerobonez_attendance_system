@@ -1,0 +1,98 @@
+{% load static  %}
+<!DOCTYPE html>
+<html>
+<head>
+  
+<link rel="stylesheet" href="{{ STATIC_URL }}/Static/css/materialize.css">  
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  -->
+    <script src="{{ STATIC_URL }}/Static/javascript/materialize.js"></script> 
+    <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
+{% if page_title %}
+  <title>{{page_title}}</title>  
+{% else %}
+  <title>e-Hadir Attendance System</title>
+  {% endif %}
+  
+
+<link rel="shortcut icon" href="{{ STATIC_URL }}/Static/images/favicon.png" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600&display=swap" rel="stylesheet">
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+  
+
+
+  <style>
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      text-align: justify; 
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    
+    tbody td{
+      padding: 0px !important;
+
+    } 
+
+
+    tbody tr p {
+      margin: 0% !important;
+      padding: 0% !important
+    }
+
+ 
+
+
+
+
+
+
+
+
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+</head>
+<body id="body">      
+{% include 'partials/root/navbar.html' %}
+ 
+{% block 'mainbody' %}
+
+ 
+{% endblock 'mainbody' %}
+          
+          
+
+  <!-- Dropdown Trigger -->
+ 
+           
+<script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>  
+<script src="{{ STATIC_URL }}/Static/javascript/responsive.js"></script>   
+{% block 'js' %}
+{% endblock 'js' %}
+<script>
+ 
+
+document.addEventListener('DOMContentLoaded', function() {
+  var collapsibleElem = document.querySelector('.collapsible');
+  var collapsibleInstance = M.Collapsible.init(collapsibleElem, {Collapsible:true});
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {
+      'Dropdown': true,
+      'coverTrigger':false
+    });
+  });
+ 
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {
+      "FormSelect":true
+    });
+  });
+ 
+</script>
+   </body>
+ </html>

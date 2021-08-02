@@ -1,0 +1,202 @@
+{% extends 'base.html' %}v
+{% block 'mainbody' %}
+
+
+
+<br>
+
+<div class="container">
+<div class="container">
+    <form action="/" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
+        
+        
+        <div class="select_teacher">
+            <label>Select Teacher</label>
+            <select name='teacher' class="browser-default"  id="select_teacher">
+              <option value="" disabled selected>Select Teacher</option>
+              {% for name  in teachers %}
+                <option value="{{name}}">{{name}}</option>
+              {% endfor %}
+            </select>
+            <br>
+        </div>
+
+        
+        <div class="select_standard" style="display: none">
+            <label>Select Standard</label>
+            <select name='standard' class="browser-default"  id="select_standard">
+            </select>
+            <br>
+        </div>
+
+
+        
+        <div class="select_class" style="display: none">
+            <label>Select Class</label>
+            <select name='class' class="browser-default"  id="select_class">
+            </select>
+            <br>
+        </div>
+
+        
+        <div class="select_subject" style="display: none">
+            <label>Select Subject</label>
+            <select name='subject' class="browser-default"  id="select_subject">
+            </select>
+            <br>
+        </div>
+
+
+        <button class="btn nextbtn" style="width: 100%;display:none">Next</button>
+
+
+    </form>
+</div>
+</div>
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+<script>
+
+var teacher_value = ''
+var standard_value = ''
+var class_value = ''
+var subject_value = ''
+
+
+
+
+
+
+
+
+
+$('#select_subject').change(function(e){
+    $('.nextbtn').show();
+    
+    subject_value = $(this).find(":selected").val() 
+
+
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#select_class').change(function(e){
+    $('div.select_subject').hide();
+    $('.nextbtn').hide();
+    class_value = $(this).find(":selected").val() 
+
+    $.ajax({
+        url: "/get_subjects", 
+        data: {"standard":standard_value,'class':class_value},
+        success: function(data){
+            var subjects = data.subjects  
+            $('div.select_subject').show();
+            $('select#select_subject').html('') 
+            $('select#select_subject').append(`<option value="" disabled selected>Select Subject</option> `)
+            for(var x=0;x<subjects.length;x++){
+                $('select#select_subject').append(`
+                <option value="${subjects[x]}">${subjects[x]}</option> 
+                `)
+            }
+        }
+      });
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#select_standard').change(function(e){
+    $('div.select_class').hide();
+    $('div.select_subject').hide();
+    $('.nextbtn').hide();
+    var standard = $(this).find(":selected").val()
+    standard_value = standard 
+    $.ajax({
+        url: "/get_classes", 
+        data: {"standard":standard_value},
+        success: function(data){
+            var classes = data.classes
+            $('div.select_class').show();
+            $('select#select_class').html('') 
+            $('select#select_class').append(`<option value="" disabled selected>Select Class</option> `)
+            for(var x=0;x<classes.length;x++){
+                $('select#select_class').append(`
+                <option value="${classes[x]}">${classes[x]}</option> 
+                `)
+            }
+        }
+      });
+})
+
+
+
+
+
+
+
+$('#select_teacher').change(function(e){
+    $('div.select_standard').hide();
+    $('div.select_class').hide();
+    $('div.select_subject').hide();
+    $('.nextbtn').hide();
+    var teacher = $(this).find(":selected").val()
+    teacher_value = teacher
+    $.ajax({
+        url: "/get_standards", 
+        success: function(data){
+            var standards = data.standards
+            $('div.select_standard').show();
+            $('select#select_standard').html('') 
+            $('select#select_standard').append(`<option value="" disabled selected>Select Standard</option> `)
+            for(var x=0;x<standards.length;x++){
+                $('select#select_standard').append(`
+                <option value="${standards[x]}">${standards[x]}</option> 
+                `)
+            }
+        }
+      });
+})
+
+
+
+
+</script>
+
+
+
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}
