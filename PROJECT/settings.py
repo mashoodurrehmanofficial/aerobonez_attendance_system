@@ -119,12 +119,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/Static/'
+STATIC_ROOT = '/home/avaelon/aerobonez_attendance_system/Static'
  
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Static')
 ]
 
-# STATIC_ROOT = '/home/avaelon/aerobonez_attendance_system/Static'
 
 
 # git config --global user.email "mashoodurrehmanofficial.com".
