@@ -44,7 +44,7 @@ def attendance(request):
         checkfolder()
         filename = str(datetime.now().strftime("%m-%d-%Y-%H-%M-%S"))+'.csv'
         file_path = os.path.join(report_folder,filename)
-        df.to_csv(file_path,index=False)
+        df.to_csv(file_path)
 
 
         return render(request, 'root/completion.html',{'download_url':filename})
