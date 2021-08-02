@@ -119,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/Static/'
-STATIC_ROOT = '/home/avaelon/aerobonez_attendance_system/Static'
+STATIC_ROOT = '/home/avaelon/aerobonez_attendance_system/Static2'
  
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Static')
