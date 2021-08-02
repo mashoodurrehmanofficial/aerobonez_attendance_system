@@ -74,8 +74,12 @@ def index(request):
         incoming_standard = request.POST['standard']
         incoming_class = request.POST['class']
         incoming_subject = request.POST['subject']  
-        target_class = ClassList.objects.filter(standard__name= Standard.objects.get(name=incoming_standard)).filter(name=incoming_class).first()
-        students = Student.objects.filter(classlist__name=target_class).order_by('name')
+
+        # target_class = ClassList.objects.filter(standard__name= Standard.objects.get(name=incoming_standard)).filter(name=incoming_class).first()
+        # students = Student.objects.filter(classlist__name=target_class).order_by('name')
+        students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
+        
+        
         students = [[x.name,x.uid] for x in students]
         ids = [int(x[-1]) for x in students]
         print(students)

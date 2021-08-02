@@ -16,8 +16,8 @@ from itertools import chain
 # )
  
 
-# standard_class_studentname = os.path.join(os.getcwd(),'standard_class_studentname.csv')
-# level_standard_subject = os.path.join(os.getcwd(),'level_standard_subject.csv')
+standard_class_studentname = os.path.join(os.getcwd(),'standard_class_studentname.csv')
+level_standard_subject = os.path.join(os.getcwd(),'level_standard_subject.csv')
 # df = pd.read_csv(standard_class_studentname)[['Name','Class']].groupby('Class') .agg(pd.Series.tolist).values.tolist()
 
 
@@ -28,7 +28,7 @@ from itertools import chain
 #     [Student(name=record[-1],uid=record[0]) for record in df]
 # )
 
-# df = pd.read_csv(standard_class_studentname).values.tolist()
+df = pd.read_csv(standard_class_studentname).values.tolist()
 # df = [[x[0],x[1],x[-1]] for x in df]
  
  
@@ -77,6 +77,10 @@ from itertools import chain
 # subjects = list(chain.from_iterable(df))
 # subjects = list(set([x for x in subjects if type(x) is str]))
 
+
+
+
+
 # Subject.objects.all().delete()
 # Subject.objects.bulk_create(
 #     [Subject(name=x) for x in subjects]
@@ -103,16 +107,83 @@ from itertools import chain
 
 
 
-data = ['8994793p', '7595598p', '7593711p', '9834608a', '8625395a', '8994795l', '8994796p', '9376198l', '7892970p', '8424383p', '7612364p', '9198602p', '8761309p', '7908219p', '7892815p', '9418157p', '6053457p', '6032559p', '9448668p', '8669780p']
-data = [[(x[:-1]),x[-1]] for x in data]
-data2=[]
-all_students = Student.objects.filter(uid__in=[x[0] for x in data])
-for student in all_students:
-    record = [x for x in data if student.uid==x[0]][0]
-    record.insert(0,student.name) 
-    if record[-1]=='p':record[-1] = 'Present'
-    if record[-1]=='a':record[-1] = 'Absent'
-    if record[-1]=='l':record[-1] = 'Late' 
-    data2.append(record)
-    print(record)
 
+# df = pd.read_csv(standard_class_studentname).values.tolist()
+# df = [[x[-1],x[-2]] for x in df]
+# df = list(set(tuple(sorted(x)) for x in df))
+# df = [list(x) for x in df]
+
+
+# ClassList.objects.all().delete()
+# ClassList.objects.bulk_create(
+#     [ClassList(name=x[0],uid=x[-1]) for x in df]
+# )
+
+
+
+
+# df = pd.read_csv(standard_class_studentname).values.tolist()
+# standards = list(set([x[-2] for x in df]))
+# for standard in standards:
+#     classes = list(set([x[-1] for x in df if x[-2]==standard]))
+#     classes = [ClassList.objects.get(name=x,uid=standard) for x in classes]
+#     standard = Standard.objects.get(name=standard)
+#     standard.class_list.add(*classes)
+#     print(standard)
+
+
+
+
+
+
+
+# x = ClassList.objects.filter(uid='TINGKATAN 5')
+# print(len(x.distinct()))
+
+
+
+
+# df = pd.read_csv(standard_class_studentname).values.tolist()
+# standards = list(set([x[-2] for x in df]))
+
+# # [1727593, 'YUKI HEW YUN XIAN', 'TINGKATAN 5', 'CEMPAKA']
+# students = Student.objects.all()
+
+# for standard in standards:
+#     classes = ClassList.objects.filter(uid=standard)
+#     for target_class in classes:
+#         students = [x[:2] for x in df if x[-1]==target_class.name]
+#         students = [Student.objects.get(uid=x[0],name=x[-1]) for x in students]
+#         if standard=='TINGKATAN 5' and target_class.name=='CEMPAKA':
+#             print('-'*50)
+#             print(([x.name for x in students]))
+#         target_class.student.add(*students)
+#         print('-'*50)
+        
+# students = Student.objects.filter(classlist__uid='TINGKATAN 5',classlist__name='CEMPAKA')
+# print(len(students))
+
+
+
+
+
+
+# df = pd.read_csv(standard_class_studentname).values.tolist()
+# standards = list(set([x[-2] for x in df]))
+
+# # # [1727593, 'YUKI HEW YUN XIAN', 'TINGKATAN 5', 'CEMPAKA']
+# # students = Student.objects.all()
+# for standard in standards:
+#     classes = ClassList.objects.filter(uid=standard)
+#     for target_class in classes:
+#         newdf = pd.read_csv(standard_class_studentname).groupby(['Standard','Class']).get_group((standard,target_class.name)).agg(list).values.tolist()
+#         students = [x[:2] for x in newdf]
+#         students = [Student.objects.get(uid=x[0],name=x[-1]) for x in students]
+#         print(students)
+#         print(len(students))
+#         target_class.student.add(*students)    
+            
+            
+# x=(Student.objects.filter(classlist__name='CEMPAKA',classlist__uid='TINGKATAN 5'))
+
+# print(len(x))
