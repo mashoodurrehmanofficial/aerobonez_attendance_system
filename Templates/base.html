@@ -101,7 +101,12 @@ document.addEventListener('DOMContentLoaded', function() {
       Sidenav:true
     });
   });
-
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {
+      Sidenav:true
+    });
+  });
 
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
