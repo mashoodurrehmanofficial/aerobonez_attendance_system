@@ -1,0 +1,68 @@
+{% extends 'base.html' %}v
+{% block 'mainbody' %}
+
+
+
+<br>
+
+<div class="container">
+<center>
+  {% if message  %}
+    <h4 class="green-text">{{message}}</h4>
+  {% endif %}
+
+   {% if error  %}
+    <h4 class="red-text">{{error}}</h4>
+  {% endif %}
+
+  
+</center>
+
+
+<div class="container">
+    <form action="/account/signup" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
+        <center><h3><b>Signup Form</b></h3></center>
+
+        <div class="select_teacher">
+          <label>Select Name</label>
+          <select name='usernmae' class="browser-default"  id="select_teacher">
+            <option value="" disabled selected>Select Name</option>
+            {% for name  in teachers %}
+              <option value="{{name}}">{{name}}</option>
+            {% endfor %}
+          </select> 
+      </div>
+
+        <div class="input-field ">
+            <input id="email" name="email" type="email" class="validate">
+            <label for="email">Email</label>
+          </div>
+
+          <div class="input-field ">
+            <input id="password" name="password" type="text" class="validate">
+            <label for="password">Password</label>
+          </div>
+ 
+     
+        
+
+        <button class="btn" style="width: 100%">Sign Up</button>
+
+
+    </form>
+</div>
+</div>
+
+
+
+
+
+
+
+
+ 
+
+
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}

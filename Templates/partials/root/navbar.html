@@ -6,13 +6,28 @@
 
   <nav  class="green ">
       <div class="nav-wrapper">
-          <a href="/" class="brand-logo" style="padding-left: 10px;">e-Hadir Attendance System</a>
+          <a href="/" class="brand-logo" style="padding-left: 10px;">e-Hadir SMKBM</a>
           <!-- <a href="/" class="brand-logo"><i style="font-size: 50px;" class="large material-icons">network_check</i></a> -->
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+
+              {% if user.is_superuser %}
+              <li><a href="/dashboard/adminpanel">Dashboard</a></li>
+              {% else %}
+              <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
+              {% endif %}
+
+              <li><a href="/account/logout">Logout</a></li>
+              
+
+            {% else %}
+              
             
-    
-             
+            <li><a href="/account/signup">Signup</a></li>
+            <li><a href="/account/login">Login</a></li>
+            
+            {% endif %}
            </ul>
       </div>
     </nav>

@@ -10,7 +10,7 @@
 {% if page_title %}
   <title>{{page_title}}</title>  
 {% else %}
-  <title>e-Hadir Attendance System</title>
+  <title>e-Hadir SMKBM</title>
   {% endif %}
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -27,35 +27,36 @@
       font-family: 'Nunito', sans-serif;
       text-align: justify; 
     }
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    
-    tbody td{
-      padding: 0px !important;
-
-    } 
-
-
-    tbody tr p {
-      margin: 0% !important;
-      padding: 0% !important
-    }
+ 
 
  
 
 
 
+html, body{
+  height: 100% !important;
+}
 
 
+header, main, footer {
+  padding-left: 250px;
+}
 
-
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+     
+ul.collection li {
+  padding: 0% !important;
+  margin: 0% !important
+}
 
     </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
 </head>
-<body id="body">      
+<body id="body" style="height: 100%;">      
 {% include 'partials/root/navbar.html' %}
  
 {% block 'mainbody' %}
@@ -86,7 +87,22 @@ document.addEventListener('DOMContentLoaded', function() {
   });
  
 
-  
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, {
+      Collapsible:true
+    });
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {
+      Sidenav:true
+    });
+  });
+
+
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, {

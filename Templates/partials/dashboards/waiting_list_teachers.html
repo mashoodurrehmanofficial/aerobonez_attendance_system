@@ -1,0 +1,91 @@
+
+<table>
+    <thead>
+      <tr>
+          <th style="text-align:center !important">Index</th>
+          <th style="width:70% !important">Name</th>
+          <th><center>Mark as Teacher</center></th> 
+      </tr>
+    </thead>
+    <tbody>
+        {% for teacher in waiting_list_teachers %}
+                  <tr>
+                    <td style="text-align:center !important">{{ forloop.counter }}</td>
+                    <td style="width:70% !important;padding-left: 10px !important;">{{teacher.name}}</td>
+                    <td>
+
+                        <center>
+                            {% if teacher.is_allowed %}
+                            <p>
+                                <label>
+                                  <input  class="box" id="{{teacher.uid}}" type="checkbox" / checked>
+                                  <span></span>
+                                </label>
+                              </p>
+                            
+                            {% else %}
+                            <p>
+                                <label>
+                                  <input class="box" id="{{teacher.uid}}" type="checkbox" />
+                                  <span></span>
+                                </label>
+                              </p>
+                            
+                            {% endif %}
+                        </center>  
+                    </td>    
+                  </tr>  
+        {% endfor %}
+    </tbody>
+  </table>
+  <input type="text" name="data" id="data" style="width:1px ; height:1px !important">
+  <br>
+  <button id="waiting_list_teachers_btn" class="btn">Submit</button>
+ 
+
+
+{% block 'js' %}
+
+<script> 
+   
+
+var list = []
+$('#waiting_list_teachers_btn').click(function(e){  
+    e.preventDefault()
+    var list=[]
+    var elems = $('.box:checked')
+    for(var i=0;i<elems.length;i++){ 
+        list.push(elems[i].id) 
+    }
+    
+    $('#data').val('')    
+    $('#data').val(list)    
+    
+    $.ajax({
+        url: "waiting_list_teachers_list_update", 
+        data: {"teachers":$('#data').val()},
+        success: function(data){
+            if(data.message==true){
+                alert("Records updated successfully !")
+            }else{
+                alert("There is some issue while updating records")
+            }
+        }
+      });
+
+
+
+
+
+
+
+})
+
+
+
+
+</script>
+
+
+{% endblock 'js' %}
+
