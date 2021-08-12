@@ -1,0 +1,124 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+  <center>
+    {% if message  %}
+    <h4 class="green-text">{{message}}</h4>
+    {% endif %}
+    
+    {% if error  %}
+    <h4 class="red-text">{{error}}</h4>
+    {% endif %}
+  </center>
+
+
+  <center>
+    <h4><b>Teacher Data</b></h4>
+  </center> 
+ <form action="" class="z-depth-2" method="POST" style="border-radius: 20px;padding:20px">{% csrf_token %}
+
+  <div class="input-field ">
+    <input id="name" name="name" type="text" class="validate" value="{{teacher_profile.name}}" readonly>
+    <label for="name">Teacher Name</label>
+  </div>
+
+   <div class="input-field ">
+    <input id="email" name="email" type="text" class="validate" value="{{teacher_profile.email}}" >
+    <label for="email">Teacher Email</label>
+  </div>
+ 
+   <div class="input-field ">
+    <input id="password" name="password" type="text" class="validate" value="{{teacher_profile.password}}" >
+    <label for="password">Teacher Password</label>
+  </div>
+ 
+
+
+  {% if teacher_profile.is_allowed %}
+  <p>
+      <label>
+        <input name='is_allowed'  class="box" id="{{teacher_profile.uid}}" type="checkbox" / checked>
+        <span>Allowed as Teacher</span>
+      </label>
+    </p>
+  
+  {% else %}
+  <p>
+      <label>
+        <input name='is_allowed' class="box" id="{{teacher_profile.uid}}" type="checkbox" />
+        <span>Allowed as Teacher</span>
+      </label>
+    </p>
+  
+  {% endif %}
+
+    <input type="text" name="teacher_id" style="height: 1px;width: 1px;" value="{{teacher_id}}">
+
+  <br>
+  <button type="submit" class="btn right" style="width: 100%;">Update Teacher Profile</button>
+  <br><br>
+  
+ </form>
+
+
+  
+
+ 
+ <div>
+ 
+  
+
+   
+
+
+
+
+ 
+
+</div> 
+
+ 
+
+<script>
+
+$('.remove_class_from_profile').click(function(e){
+  var data = this.id.split("__");
+  var standard = data[0]
+  var class_name = data[1]
+  var student_id = data[2]
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_class_from_profile/", 
+    data: {"standard":standard,'student_id':student_id,'class_name':class_name},
+    success: function(data){
+     location.reload()
+    }
+  }); 
+})
+
+
+
+$('#add_standard_form').submit(function(e){
+  e.preventDefault()
+  var standard = $('#standard').val()
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_class_from_profile", 
+    data: {"standard":standard},
+    success: function(data){
+      alert(1)
+     // location.reload()
+    }
+  }); 
+
+})
+</script>
+
+
+ 
+{% endblock 'engine' %}

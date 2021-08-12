@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
+from django.db.models.signals import post_delete, pre_delete
+from django.dispatch.dispatcher import receiver
 
 
 
@@ -9,7 +10,7 @@ import uuid
 
 class Teacher(models.Model):
     name = models.CharField(max_length=1000, default='', blank=True)
-    uid=models.CharField(max_length=200,default='',blank=False)  
+    uid=models.CharField(max_length=200,default='',blank=True)  
     is_allowed = models.BooleanField(default=False)
     def __str__(self):
         return self.name
@@ -18,14 +19,30 @@ class Teacher(models.Model):
 
 
 class  TeacherProfile(models.Model):
+    email = models.CharField(max_length=1000, default='', blank=True)
+    password = models.CharField(max_length=1000, default='', blank=True)
     name = models.CharField(max_length=1000, default='', blank=True)
     uid=models.CharField(max_length=200,default='',blank=True)  
     is_allowed = models.BooleanField(default=False)
     user = models.OneToOneField(User,on_delete=models.CASCADE,blank=True)
-    
+    reset_code = models.CharField(max_length=1000, default='', blank=True)
 
     def __str__(self):
             return self.name
+
+
+@receiver(pre_delete, sender=User)
+def delete_profile(sender, instance, *args, **kwargs):
+    target_profile = TeacherProfile.objects.filter(email=instance.email).first()
+    if target_profile:
+        teacher = Teacher.objects.filter(name=target_profile.name).first()
+        print('---',teacher)
+        teacher.is_allowed = False
+        teacher.save()
+        target_profile.delete()
+    else:
+        print("fail")
+        print(instance.email)
 
 
 

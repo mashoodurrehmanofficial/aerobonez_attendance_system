@@ -182,23 +182,14 @@ def adminpanel(request):
     else:
         return redirect('/')
 
+ 
 
 
 
 
+   
 
 
 
-
-
-
-  
-def waiting_list_teachers_list_update(request): 
-    incoming_list = request.GET['teachers'].split(',')
-    TeacherProfile.objects.filter(uid__in=incoming_list).update(is_allowed=True)
-    TeacherProfile.objects.exclude(uid__in=incoming_list).update(is_allowed=False)
-    Teacher.objects.filter(uid__in=incoming_list).update(is_allowed=True)
-    Teacher.objects.exclude(uid__in=incoming_list).update(is_allowed=False)
-    return JsonResponse({"message":True})
-
+ 
  

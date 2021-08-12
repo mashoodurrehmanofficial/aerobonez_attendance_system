@@ -13,7 +13,7 @@
             {% if user.is_authenticated %}
 
               {% if user.is_superuser %}
-              <li><a href="/dashboard/adminpanel">Dashboard</a></li>
+              <li><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Dashboard</a></li>
               {% else %}
               <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
               {% endif %}
@@ -38,7 +38,20 @@
   {% if user.is_authenticated %}
 
   {% if user.is_superuser %}
-  <li><a href="/dashboard/adminpanel">Dashboard</a></li>
+  
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Manage Standards</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_classes/">Manage Classes</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_students/">Manage Students</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_subjects/">Manage Subjects</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers">Manage Teachers</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers/allow_teachers">Allow Teachers</a></li>
+ 
+ 
+
+
+
+
+
   {% else %}
   <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
   <li class=""><a href="/dashboard/mark_attendance">Mark Attendance</a></li>

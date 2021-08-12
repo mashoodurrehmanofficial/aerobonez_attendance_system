@@ -1,5 +1,27 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
 
-<table>
+ 
+
+<style>
+    tbody td {
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+    tbody td p { 
+      margin: 5px !important;
+    }
+  </style>
+
+
+<div style="margin:5px 20px">
+  <center>
+    <h3><b>Allow Teachers</b></h3>
+  </center>
+
+
+
+  <table>
     <thead>
       <tr>
           <th style="text-align:center !important">Index</th>
@@ -44,13 +66,21 @@
  
 
 
-{% block 'js' %}
+
+
+
+ 
+
+</div> 
+
+ 
+ 
 
 <script> 
    
 
 var list = []
-$('#waiting_list_teachers_btn').click(function(e){  
+$('#waiting_list_teachers_btn').click(function(e){   
     e.preventDefault()
     var list=[]
     var elems = $('.box:checked')
@@ -62,7 +92,7 @@ $('#waiting_list_teachers_btn').click(function(e){
     $('#data').val(list)    
     
     $.ajax({
-        url: "waiting_list_teachers_list_update", 
+        url: "/dashboard/views_admin_panel_db_operations/manage_teachers/allow_teachers_post/", 
         data: {"teachers":$('#data').val()},
         success: function(data){
             if(data.message==true){
@@ -72,20 +102,22 @@ $('#waiting_list_teachers_btn').click(function(e){
             }
         }
       });
-
-
-
-
-
-
-
 })
 
-
-
-
 </script>
+ 
+ 
+{% endblock 'engine' %}
 
 
-{% endblock 'js' %}
 
+
+
+
+
+
+
+
+
+
+ 

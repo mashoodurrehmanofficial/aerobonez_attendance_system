@@ -1,0 +1,90 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+  <center>
+    <h3><b>Manage Teacher</b></h3>
+  </center>
+
+
+
+   <!-- Modal Structure -->
+   <div id="add_teacher_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Add Teacher</b></h4>
+      <form action="" id="add_student_form">
+        <div class="input-field ">
+          <input id="teacher_name" name="teacher_name" type="text" class="validate" required>
+          <label for="teacher_name">Teacher Name</label>
+        </div>
+        
+      
+        <button type="submit" class="btn right">Add Teacher</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+
+
+  
+
+  <button  id="add_teacher_modal_button" data-target="add_teacher_modal" class="btn modal-trigger btn right">Add Teacher</button>
+
+
+
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Teacher Name</th>
+        <th>Operations</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+      {% for teacher in teachers %}
+      <td>{{ forloop.counter }}</td>
+      <td> <a href="/dashboard/views_admin_panel_db_operations/manage_teachers_extract_data/{{teacher.id}}">   {{teacher.name}}</a> </td>
+      <td> <a href="/dashboard/views_admin_panel_db_operations/manage_teachers_delete/{{teacher.id}}"><i class="material-icons  red-text"> delete</i></a>  </td>
+
+        </tr>
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+
+</div> 
+
+ 
+
+<script>
+  $('#add_student_form').submit(function(e){
+    e.preventDefault()
+    var teacher_name = $('#teacher_name').val() 
+    $.ajax({
+      url: "/dashboard/views_admin_panel_db_operations/manage_teachers_add", 
+      data: {'teacher_name':teacher_name},
+      success: function(data){ 
+        if ( data.error){
+          alert(data.error)
+        }else{ 
+        location.reload() 
+        }
+      }
+    }); 
+  })
+</script>
+
+
+ 
+{% endblock 'engine' %}

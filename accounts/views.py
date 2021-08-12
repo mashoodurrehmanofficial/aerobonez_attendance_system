@@ -1,9 +1,14 @@
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
+
+try:from .EMAIL_SENDER import SEND_MESSAGE
+except ImportError:from EMAIL_SENDER import SEND_MESSAGE
 
 from root.models import *
 
@@ -27,7 +32,7 @@ def signup_page(request):
                 teacher = Teacher.objects.get(name=usernmae)
                 teacher.uid=uid
                 teacher.save()
-                teacher_profile = TeacherProfile(name=usernmae,user=user,uid=uid)
+                teacher_profile = TeacherProfile(name=usernmae,user=user,uid=uid,email=email,password=password)
                 teacher_profile.save()
                 return render(request, 'accounts/login.html',{"teachers":teachers,'message':"Account created successfully !"})
         except IntegrityError:
@@ -73,3 +78,52 @@ def login_page(request):
 def logout_page(request):
     logout(request)
     return redirect('login_page')
+
+
+
+def message_page(request):
+    return render(request,'accounts/message_page.html')
+
+
+
+
+def message_page(request):
+    return render(request,'accounts/message_page.html')
+
+def forgot_password(request): 
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email=email).exists():
+            target_profile = TeacherProfile.objects.filter(email=email).first()
+            code = str(str(uuid.uuid4())+str(uuid.uuid4())).replace('-','')
+            target_profile.reset_code = code
+            target_profile.save() 
+            SEND_MESSAGE(email,f"http://localhost:8000/account/reset_password/{code}")
+            return redirect("message_page")
+        else:
+            return render(request, 'accounts/forgot_password.html',{"error":"Given Email doesn't exists in database !"})
+    return render(request,'accounts/forgot_password.html')
+
+
+
+
+
+def reset_password(request,reset_code):
+    target_profile = TeacherProfile.objects.filter(reset_code=reset_code).first()
+    if target_profile:
+            if request.method == 'POST':
+                new_password = request.POST['password']
+                target_user = User.objects.filter(email=target_profile.email).first()
+                target_user.set_password(new_password)
+                target_user.save()
+                target_profile.password = new_password
+                target_profile.reset_code = ''
+                target_profile.save()
+                print(target_user)
+                return redirect('login_page')
+
+
+            else:
+                return render(request,'accounts/reset_password.html')
+    else:
+        return HttpResponse("<h1>Wrong Reset Link</h1>")
