@@ -75,6 +75,17 @@ urlpatterns = [
    
     path('/views_admin_panel_db_operations/manage_student/<str:uid>', manage_student, name='manage_student'),   
     path('/views_admin_panel_db_operations/manage_students_remove_class_from_profile/', manage_students_remove_class_from_profile, name='manage_students_remove_class_from_profile'),   
+    
+    
+    
+    path('/views_admin_panel_db_operations/manage_reports/', manage_reports, name='manage_reports'),   
+    path('/views_admin_panel_db_operations/manage_reports/generate_absent_report', generate_absent_report, name='generate_absent_report'),   
+    path('/views_admin_panel_db_operations/manage_reports/generate_attendance_report', generate_attendance_report, name='generate_attendance_report'),   
+
+
+
+
+
 
 
     # path('/waiting_list_teachers_list_update', waiting_list_teachers_list_update, name='waiting_list_teachers_list_update'),          

@@ -51,6 +51,17 @@ class Student(models.Model):
     uid = models.CharField(max_length=1000, default='', blank=True) 
     is_allowed = models.BooleanField(default=False)
 
+    parent1 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+    relation1 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+    telephone1 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+
+    parent2 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+    relation2 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+    telephone2 = models.CharField(max_length=1000, default='', blank=True,unique=False)
+    
+    house_number = models.CharField(max_length=1000, default='', blank=True,unique=False) 
+    
+
     def __str__(self):
         return self.name
         

@@ -13,9 +13,10 @@ import os,pandas as pd,uuid
 from django.db.models import Q
 from datetime import datetime
 from django.db import IntegrityError
-
-
-
+from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse
+try:from .report_generator import *
+except:from report_generator import *
 # Create your views here.
  
 def manage_standards(request): 
@@ -287,27 +288,7 @@ def manage_teachers_extract_data(request,id):
             target_user.email            = new_teacher_email 
         
 
-
-        # try:
-        #     other_teacher_users = User.objects.filter(username=new_teacher_name)
-        #     other_teacher_profile = TeacherProfile.objects.filter(name=new_teacher_name)
-        #     target_teacher_profile.name = new_teacher_name
-        #     target_teacher.name         = new_teacher_name
-        #     target_user.username        = new_teacher_name
-        # except IntegrityError: 
-        #     print("error **")
-
-        #     return render(request, 'dashboards/manage_teachers_extract_data.html',{
-        #         "teacher_profile":teacher_profile,
-        #         "teacher_id":id,
-        #         'error': f"This username is already assigned to {other_teacher_users.first().username}"
-        #     })
-        
-        
-
-
-
-
+  
         target_user.save()
         target_teacher.save()
         target_teacher_profile.save() 
@@ -327,5 +308,15 @@ def manage_teachers_extract_data(request,id):
             "teacher_id":id
             
         })
+        
 
 
+def manage_reports(request):
+    return render(request, 'dashboards/manage_reports.html')
+
+
+def generate_absent_report(request): 
+    return absent_report_generator()
+
+def generate_attendance_report(request): 
+    return attendance_report_generator()
