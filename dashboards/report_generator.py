@@ -14,9 +14,13 @@ from wsgiref.util import FileWrapper
 reports_folder = os.path.join(os.getcwd(),'Reports')
 if not os.path.exists(reports_folder):os.makedirs(reports_folder)
  
+ 
 from datetime import datetime,timedelta
 
 def absent_report_generator():
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    shutil.rmtree(reports_folder)
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
     today = str(datetime.now().strftime("%m-%d-%Y"))  
     data  = AttendanceReport.objects.filter(submit_time__startswith=today).order_by('standard')
     absent_report_data =[]
@@ -48,7 +52,7 @@ def absent_report_generator():
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    shutil.rmtree(reports_folder)
+    
     return response
 
 
@@ -101,5 +105,5 @@ def attendance_report_generator():
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    shutil.rmtree(reports_folder)
+    # shutil.rmtree(reports_folder)
     return response
