@@ -320,3 +320,6 @@ def generate_absent_report(request):
 
 def generate_attendance_report(request): 
     return attendance_report_generator()
+
+def generate_weekly_report(request): 
+    return weekly_report_generator()

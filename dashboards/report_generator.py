@@ -10,6 +10,9 @@ import random,uuid
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse,HttpResponse
 from wsgiref.util import FileWrapper
+import dateparser
+
+
 
 reports_folder = os.path.join(os.getcwd(),'Reports')
 if not os.path.exists(reports_folder):os.makedirs(reports_folder)
@@ -102,6 +105,61 @@ def attendance_report_generator():
         df.to_excel(writer, sheet_name=str(standards[index]),index=False)
     writer.save() 
     # writer
+    wrapper = FileWrapper(open(file, 'rb'))
+    response = HttpResponse(wrapper, content_type='application/force-download')
+    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+    # shutil.rmtree(reports_folder)
+    return response
+    
+    
+    
+def weekly_report_generator(): 
+    data=[]
+    dates=[]
+    for day in range(0,5):
+        date_ago= f"{day} days ago" 
+        stamp=dateparser.parse(date_ago).strftime("%m-%d-%Y") 
+        dates.append(str(stamp))
+        datax  = AttendanceReport.objects.filter(submit_time__startswith=str(stamp)).order_by('standard')
+        for x  in datax:
+            data.append(x)
+    headers = ['Standard','Teacher name','Class','Subject','Percentage %']
+
+    standards = Standard.objects.all()
+    main_df_container=[]
+    standards = list(sorted(set([x.standard for x in data])) ) 
+    for standard in standards[:]:
+        standard_df_container=[]
+        standard_data = [x for x in data if str(standard)==x.standard]
+        classes_in_standard = ClassList.objects.filter(standard__name=standard)
+        for class_name in classes_in_standard:
+            students_in_class = Student.objects.filter(classlist__name = class_name.name,classlist__uid = class_name.uid)
+            total_students_in_class = len(students_in_class) 
+            attended_subjects_of_today_in_class = [x for x in data if x.standard==standard and x.class_name==class_name.name]
+            
+            teacher_name = attended_subjects_of_today_in_class[0]
+            if teacher_name:teacher_name=teacher_name.teacher_name.split('- ')[0]
+
+            attended_subjects_of_today_in_class = list(set([x.subject for x in attended_subjects_of_today_in_class]))
+            for attended_subject in attended_subjects_of_today_in_class:
+                presents_in_subject_class = [x for x in data if x.standard==standard and x.class_name==class_name.name and x.subject==attended_subject and x.attendance_status== 'Present']
+                total_presents_in_subject_class = len(presents_in_subject_class)
+                percentage = str(round((total_presents_in_subject_class/total_students_in_class)*100,2))+' %'
+
+                record = [standard,teacher_name,class_name.name,attended_subject,percentage]
+                standard_df_container.append(record)
+
+        df = pd.DataFrame(data=standard_df_container,columns=headers)
+        main_df_container.append(df)
+
+
+
+    file_name = 'FridayReport '+str(datetime.now().strftime("%d-%m-%Y"))+'.xlsx'
+    file = os.path.join(reports_folder,file_name)
+    writer = pd.ExcelWriter(file, engine='xlsxwriter')
+    for index,df in enumerate(main_df_container):
+        df.to_excel(writer, sheet_name=str(standards[index]),index=False)
+    writer.save()
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
