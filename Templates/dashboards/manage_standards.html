@@ -1,0 +1,81 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+  <center>
+    <h3><b>Manage Standards</b></h3>
+  </center>
+
+
+
+  <!-- Modal Structure -->
+  <div id="add_standard_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Add Standard</b></h4>
+      <form action="" id="add_standard_form">
+        <div class="input-field ">
+          <input id="standard" name="standard" type="text" class="validate" required>
+          <label for="standard">Standard Name</label>
+        </div>
+        <button type="submit" class="btn right">Submit</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  <!-- Modal Trigger -->
+  <button data-target="add_standard_modal" class="btn modal-trigger btn right">Add Standard</button>
+
+
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Standard Name</th>
+        <th>Operations</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+      {% for standard in standards %}
+      <td>{{ forloop.counter }}</td>
+      <td>{{standard}}</td>
+      <td> <a href="/dashboard/views_admin_panel_db_operations/manage_standards_delete/{{standard.id}}"><i class="material-icons  red-text"> delete</i></a>  </td>
+
+      </tr>
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+
+</div> 
+
+ 
+
+<script>
+$('#add_standard_form').submit(function(e){
+  e.preventDefault()
+  var standard = $('#standard').val()
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_standards_add", 
+    data: {"standard":standard},
+    success: function(data){
+      location.reload()
+    }
+  }); 
+
+})
+</script>
+
+
+ 
+{% endblock 'engine' %}

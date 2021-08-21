@@ -1,0 +1,44 @@
+{% extends 'base.html' %}v
+{% block 'mainbody' %}
+
+
+
+<br>
+
+<div class="container">
+  <center>
+    {% if message  %}
+      <h4 class="green-text">{{message}}</h4>
+    {% endif %}
+  
+     {% if error  %}
+      <h4 class="red-text">{{error}}</h4>
+    {% endif %}
+  
+    
+  </center>
+  
+<div class="container">
+ 
+  <h4>
+    <b> <i class="material-icons left green-text large">check_circle</i> Reset link has been sent to your email.  </b>
+  </h4>
+
+  
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+ 
+
+
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}

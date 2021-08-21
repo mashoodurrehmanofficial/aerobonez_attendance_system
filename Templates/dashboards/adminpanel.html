@@ -1,0 +1,29 @@
+{% extends 'base.html' %}v
+{% block 'mainbody' %}
+
+
+
+<br>
+
+<div style="margin:20px">
+<center>
+  {% if message  %}
+    <h4 class="green-text">{{message}}</h4>
+  {% endif %}
+
+   {% if error  %}
+    <h4 class="red-text">{{error}}</h4>
+  {% endif %}
+
+  
+</center>
+
+
+<h1>admin-panel</h1>
+
+</div>
+</div> 
+
+{% endblock 'mainbody' %}
+{% block 'js' %}
+{% endblock 'js' %}

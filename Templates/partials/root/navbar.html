@@ -6,20 +6,73 @@
 
   <nav  class="green ">
       <div class="nav-wrapper">
-          <a href="/" class="brand-logo" style="padding-left: 10px;">e-Hadir Attendance System</a>
+          <a href="/" class="brand-logo" style="padding-left: 10px;">e-Hadir SMKBM</a>
           <!-- <a href="/" class="brand-logo"><i style="font-size: 50px;" class="large material-icons">network_check</i></a> -->
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+
+              {% if user.is_superuser %}
+              <li><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Dashboard</a></li>
+              {% else %}
+              <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
+              {% endif %}
+
+              <li><a href="/account/logout">Logout</a></li>
+              
+
+            {% else %}
+              
             
-    
-             
+            <li><a href="/account/signup">Signup</a></li>
+            <li><a href="/account/login">Login</a></li>
+            
+            {% endif %}
            </ul>
       </div>
     </nav>
 </div>
  
 
+<ul class="sidenav" id="mobile-demo">
+  {% if user.is_authenticated %}
 
+  {% if user.is_superuser %}
+  
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Manage Standards</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_classes/">Manage Classes</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_students/">Manage Students</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_subjects/">Manage Subjects</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers">Manage Teachers</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers/allow_teachers">Allow Teachers</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_reports">Generate Reports</a></li>
+ 
+
+
+
+
+
+  {% else %}
+  <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
+  <li class=""><a href="/dashboard/mark_attendance">Mark Attendance</a></li>
+      <li class=""><a href="/dashboard/view_attendance_directory">Attendance Directory</a></li>
+  {% endif %}
+
+  <li><a href="/account/logout">Logout</a></li>
+  
+
+{% else %}
+  
+
+<li><a href="/account/signup">Signup</a></li>
+<li><a href="/account/login">Login</a></li>
+
+{% endif %}
+  <!-- <li><a href="sass.html">Sass</a></li>
+  <li><a href="badges.html">Components</a></li>
+  <li><a href="collapsible.html">Javascript</a></li>
+  <li><a href="mobile.html">Mobile</a></li> -->
+</ul>
 
 
 

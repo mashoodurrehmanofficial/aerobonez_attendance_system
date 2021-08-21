@@ -1,0 +1,107 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+
+
+
+  <center>
+    <h4><b>Student Data</b></h4>
+  </center> 
+ <form action="" class="z-depth-2 " style="border-radius: 20px;padding:20px">
+  <div class="input-field ">
+    <input id="name" name="name" type="text" class="validate" value="{{student.name}}" readonly>
+    <label for="name">Student Name</label>
+  </div>
+  <div class="input-field ">
+    <input id="uid" name="uid" type="text" class="validate" value="{{student.uid}}" readonly>
+    <label for="uid">Unique ID</label>
+  </div> 
+ </form>
+
+
+  
+  <center>
+    <h4><b>Enrolled classes</b></h4>
+  </center> 
+ <div>
+ 
+  
+
+   
+
+
+
+
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Standard</th>
+        <th>Class Name</th>
+        <th>Remove from Class</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+      {% for class in enrolled_classes %}
+      <td>{{ forloop.counter }}</td>
+      <td>{{class.uid}}</td>
+      <td>{{class}}</td> 
+      <td> <i style="cursor: pointer;" id="{{class.uid}}__{{class.name}}__{{student.id}}" class="remove_class_from_profile  material-icons  red-text"> delete</i>  </td>
+
+        </tr>
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+
+</div> 
+
+ 
+
+<script>
+
+$('.remove_class_from_profile').click(function(e){
+  var data = this.id.split("__");
+  var standard = data[0]
+  var class_name = data[1]
+  var student_id = data[2]
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_class_from_profile/", 
+    data: {"standard":standard,'student_id':student_id,'class_name':class_name},
+    success: function(data){
+     location.reload()
+    }
+  }); 
+})
+
+
+
+$('#add_standard_form').submit(function(e){
+  e.preventDefault()
+  var standard = $('#standard').val()
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_class_from_profile", 
+    data: {"standard":standard},
+    success: function(data){
+      alert(1)
+     // location.reload()
+    }
+  }); 
+
+})
+</script>
+
+
+ 
+{% endblock 'engine' %}

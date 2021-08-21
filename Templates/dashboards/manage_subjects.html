@@ -1,0 +1,205 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+  <center>
+    <h3><b>Manage Subjects</b></h3>
+  </center>
+
+
+  <button id="add_subject_button" data-target="add_subject_modal" class="btn modal-trigger btn right">Add new Subject   <i class="material-icons right">add</i> </button>
+  <button style="margin-right: 20px;display: none;" id="attach_subject_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Attach new Subject  <i class="material-icons right">link</i> </button>
+  <br>
+  <!-- Modal Structure -->
+  <div id="add_subject_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Add new Subject</b></h4>
+      <form action="" id="add_subject_form">
+        <div class="input-field ">
+          <input id="subject" name="subject" type="text" class="validate" required>
+          <label for="subject">Subject Name</label>
+        </div>
+        <button type="submit" class="btn right">Add Subject   <i class="material-icons right">add</i> </button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+    <!-- Modal Structure -->
+  <div id="attach_subject_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Attach Subject to current standard</b></h4>
+      <form action="" id="attach_subject_form">
+        <div class="select_standard"> 
+          <label>Select Subject</label>
+          <select name='subject' class="browser-default"  id="select_subject"> 
+          </select>
+        </div> <br>
+        <button type="submit" class="btn right">Attach Subject  <i class="material-icons right">link</i> </button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  
+
+
+  <div class="select_standard"> 
+    <label>Select Standard</label>
+    <select name='standard' class="browser-default"  id="select_standard">
+        <option value="" disabled selected>Select Standard</option>
+        {% for standard  in standards %}
+        <option value="{{standard}}">{{standard}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+
+  <!-- Modal Trigger -->
+
+
+  <table id="manage_subjects_fetched_subjects_table" class="striped" style="display: none;">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Subject Name</th>
+        <th>Remove Subject</th>
+      </tr>
+    </thead>
+
+    <tbody id="manage_subjects_fetched_subjects_tbody"> 
+
+    </tbody>
+  </table>
+
+</div> 
+
+ 
+
+<script>
+
+function RENDER_TABLE_AND_SELECT_MENU(data){
+  var subjects = data.subjects 
+  var other_subjects = data.other_subjects 
+  $("#attach_subject_button").show()
+  $("#manage_subjects_fetched_subjects_table").show()
+  $("#manage_subjects_fetched_subjects_tbody").html("") 
+  $("#add_subject_button").show() 
+  $("select#select_subject").html("")
+  $("select#select_subject").append(`<option value="" disabled selected>Attach other Subject to Standard</option>  `)
+
+  for(var i=0;i<other_subjects.length;i++){
+    $("select#select_subject").append(`
+        <option value="${other_subjects[i].name}" > ${other_subjects[i].name} </option>  
+    `)
+  } 
+  for(var i=0;i<subjects.length;i++){
+    $("#manage_subjects_fetched_subjects_tbody").append(` 
+        <tr id="${subjects[i].id}">
+          <td>${i+1}</td>
+          <td> ${subjects[i].name} </td>
+          <td  onclick="remove_subject(${subjects[i].id})"> <i style="cursor:pointer" class="material-icons  red-text"> delete</i>  </td>
+        </tr> 
+
+    `)
+  }  
+}
+
+  
+  $('#select_standard').change(function(e){    
+    $("#attach_subject_button").hide() 
+    $("#manage_subjects_fetched_subjects_table").hide() 
+    var standard = $(this).find(":selected").val()
+    standard_value = standard  
+    $.ajax({
+        url: "/dashboard/views_admin_panel_db_operations/manage_subjects_fetch_standard_subjects", 
+        data: {"standard":standard_value},
+        success: function(data){
+          RENDER_TABLE_AND_SELECT_MENU(data)
+        }
+      });
+      
+})
+
+
+
+function remove_subject(id){
+  var subject_id = id
+  var standard = $("#select_standard").val()  
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_subjects_remove_subject/", 
+    data: {"standard":standard,"subject_id":subject_id},
+    success: function(data){
+      RENDER_TABLE_AND_SELECT_MENU(data)
+    } 
+  }) 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('#attach_subject_form').submit(function(e){
+  e.preventDefault()
+  var subject = $('#select_subject').val()
+  var standard = $("#select_standard").val()  
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_subjects_attach_subject/", 
+    data: {"standard":standard,"subject":subject},
+    success: function(data){
+      if ( data.error){
+        alert(data.error)
+      }else{ 
+        var elem = document.getElementById("attach_subject_modal");
+        var instance = M.Modal.getInstance(elem);
+        instance.close(); 
+        RENDER_TABLE_AND_SELECT_MENU(data) 
+          } 
+      }  
+    })
+})
+
+
+
+
+$('#add_subject_form').submit(function(e){
+  e.preventDefault()
+  var subject = $('#subject').val()
+  var standard = $("#select_standard").val() 
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_subjects_add/", 
+    data: {"standard":standard,"subject":subject},
+    success: function(data){
+      if ( data.error){
+        alert(data.error)
+      }else{
+            location.reload()
+          } 
+      }  
+    })
+})
+
+
+
+
+
+
+</script>
+
+
+ 
+{% endblock 'engine' %}

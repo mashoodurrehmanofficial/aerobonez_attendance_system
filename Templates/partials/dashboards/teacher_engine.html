@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block 'mainbody' %}
+
+<!-- RENDERER  -->
+<!-- RENDERER  -->
+<!-- RENDERER  -->
+
+<center>
+    {% if message  %}
+      <h4 class="green-text">{{message}}</h4>
+    {% endif %}
+  
+     {% if error  %}
+      <h4 class="red-text">{{error}}</h4>
+    {% endif %}
+  
+    
+  </center>
+  
+  
+{% if teacher.is_allowed %}
+  
+
+
+
+
+
+
+<ul id="slide-out" class="sidenav sidenav-fixed" style="margin-top:64px !important;width:250px">
+  
+     <ul class="collection" style="margin: 0%;">
+      <li class="collection-item"><a href="/dashboard/mark_attendance">Mark Attendance</a></li>
+      <li class="collection-item"><a href="/dashboard/view_attendance_directory">Attendance Directory</a></li>
+      <!-- <li class="collection-item"><a href="#!">Mark Attendance</a></li>
+      <li class="collection-item"><a href="#!">Mark Attendance</a></li> -->
+    </ul>
+    </ul>
+    
+    <!-- SECTION - Main Section -->
+    <main> 
+        
+                <!-- Integral Article -->
+                <!-- START FROM H4  -->
+                <!-- PAGE TITLE -->
+                
+                {% block 'engine' %} 
+                {% endblock 'engine' %}
+                
+ 
+            <!-- SECTION AD DISPLAY -->  
+              
+    </main> 
+
+
+    {% else %}
+    <center><h3>You will have access to panel after admin approves your account</h3></center>
+    {% endif %}
+    
+{% endblock 'mainbody' %}

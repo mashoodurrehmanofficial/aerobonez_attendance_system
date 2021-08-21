@@ -1,0 +1,54 @@
+{% extends 'partials/dashboards/teacher_engine.html' %}
+{% block 'engine'%}
+<style> 
+      tbody td{padding: 8px !important;} 
+  
+  
+      tbody tr p {
+        margin: 0% !important;
+        padding: 0% !important
+      }
+
+      tbody tr:nth-child(even) {
+        background: rgb(184, 184, 184)
+      }
+
+</style>
+
+
+<br>
+
+<div style="margin:10px  10px" >
+
+    
+
+    <table class="">
+        <thead>
+          <tr>
+              <th>Standard</th>
+              <th>Class</th>
+              <th>Subject</th>
+              <th>Attendance Time</th>
+              <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for report in teacher_reports %} 
+            <tr>          
+                    <td>{{report.standard}}</td>            
+                    <td>{{report.class_name}}</td>            
+                    <td>{{report.subject}}</td>            
+                    <td>{{report.submit_time}}</td>            
+                    <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
+                </tr> 
+            {% endfor %}  
+        </tbody>
+      </table>
+
+</div>
+
+<script>
+</script>
+{% endblock 'engine' %}
+{% block 'js' %}
+{% endblock 'js' %}

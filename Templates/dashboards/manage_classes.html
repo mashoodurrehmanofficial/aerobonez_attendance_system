@@ -1,0 +1,334 @@
+{% extends 'partials/dashboards/admin_engine.html' %}
+{% block 'engine'%}
+
+<style>
+  tbody td {
+    padding: 5px !important;
+  }
+</style>
+
+<div style="margin:5px 20px">
+  <center>
+    <h3><b>Manage Classes</b></h3>
+  </center>
+
+<div class="row">
+  <div class="col s6 l6 m6 select_standard"> 
+    <label>Select Standard</label>
+    <select name='standard' class="browser-default"  id="select_standard">
+        <option value="" disabled selected>Select Standard</option>
+        {% for standard  in standards %}
+        <option value="{{standard}}">{{standard}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  
+  <div class="col s6 l6 m6">
+    <div class="select_class" style="display: none">
+      <label>Select Class</label>
+      <select name='class' class="browser-default"  id="select_class">
+      </select>
+      <br>
+  </div>
+  </div>
+
+</div>
+
+            
+
+  <!-- Modal Structure -->
+  <div id="add_class_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Add Class</b></h4>
+      <form action="" id="add_class_form">
+        <div class="input-field ">
+          <input id="class_val" name="class" type="text" class="validate" required>
+          <label for="class_val">Class Name</label>
+        </div>
+        <button type="submit" class="btn right">Submit</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  <!-- Modal Trigger -->
+
+  <!-- Modal Structure -->
+  <div id="add_student_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Add another Student</b></h4>
+      <form action="" id="add_student_form">
+        
+        <div class="select_other_students" style="display: none">
+          <label>Select Student</label>
+          <select name='class' class="browser-default"  id="select_other_students">
+          </select>
+          <br>
+      </div>
+        <button type="submit" class="btn right">Add new Student to class</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  <!-- Modal Trigger -->
+
+
+
+
+  <button style="display: none;" id="delete_class_button" class="btn red">Delete Class <i class="material-icons right">delete</i> </button>
+
+  <button style="display: none" id="add_class_modal_button" data-target="add_class_modal" class="btn modal-trigger btn right">Add Class</button>
+  <button style="display: none;margin-right: 20px;" id="add_student_modal_button" data-target="add_student_modal" class="btn modal-trigger btn right">Add another Student</button>
+
+
+
+  <table class="striped display_class_students" style="display: none;">
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Student Name</th>
+        <th>Remove Student</th>
+      </tr>
+    </thead>
+    <tbody id="display_class_students_tbody"> 
+    </tbody>
+  </table>
+
+</div> 
+
+ 
+
+<script>
+  
+  
+$('#add_student_form').submit(function(e){
+    e.preventDefault()
+    var standard = $("#select_standard").val()
+    var class_val = $('#select_class').val() 
+    var student_id = $('#select_other_students').val()  
+
+    $.ajax({ 
+      url: "/dashboard/views_admin_panel_db_operations/manage_classes_add_student", 
+      data: {"standard":standard,'class':class_val,'student_id':student_id},
+      success: function(data){ 
+        var elem = document.getElementById("add_student_modal");
+        var instance = M.Modal.getInstance(elem);
+        instance.close();
+        var students = data.students
+        var other_students = data.other_students
+
+        $('div.select_other_students').show();
+        $('select#select_other_students').html('') 
+        $('select#select_other_students').append(`<option value="" disabled selected>Select Student</option> `)
+        for(var x=0;x<other_students.length;x++){
+            $('select#select_other_students').append(`
+            <option id="${other_students[x][1]}" value="${other_students[x][1]}">${other_students[x][0]}</option> 
+            `)
+        }
+
+
+
+        $('#display_class_students_tbody').html('')
+        for(var i=0;i<students.length;i++){
+          $('#display_class_students_tbody').append(`
+          <tr id="${students[i][1]}">
+            <td>${i+1}</td>
+            <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+            <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
+          </tr>
+          `) 
+        } 
+
+
+
+
+      }
+    }); 
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+$('#delete_class_button').click(function(e){
+  var standard = $("#select_standard").val()
+  var class_val = $('#select_class').val()
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_classes_delete/", 
+    data: {"standard":standard,'class':class_val},
+    success: function(data){
+      location.reload()
+    }
+  });
+
+})
+
+
+$('#add_class_form').submit(function(e){
+  e.preventDefault()
+  var standard = $("#select_standard").val()
+  var class_val = $('#class_val').val()
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_classes_add/", 
+    data: {"standard":standard,'class':class_val},
+    success: function(data){
+      location.reload()
+    }
+  });
+
+})
+
+
+$('#select_class').change(function(e){
+    $('#add_student_modal_button').show();
+    $('#delete_class_button').show();
+    $('.display_class_students').hide()
+    $('.nextbtn').hide();
+    class_value = $(this).find(":selected").val() 
+    $.ajax({
+        url: "/dashboard/views_admin_panel_db_operations/manage_classes/get_class_students", 
+        data: {"standard":standard_value,'class':class_value},
+        success: function(data){
+          $('.display_class_students').show()
+          var students = data.students
+          var other_students = data.other_students
+
+
+          $('div.select_other_students').show();
+          $('select#select_other_students').html('') 
+          $('select#select_other_students').append(`<option value="" disabled selected>Select Student</option> `)
+          for(var x=0;x<other_students.length;x++){
+              $('select#select_other_students').append(`
+              <option id="${other_students[x][1]}" value="${other_students[x][1]}">${other_students[x][0]}</option> 
+              `)
+          }
+
+
+
+          $('#display_class_students_tbody').html('')
+          for(var i=0;i<students.length;i++){
+            $('#display_class_students_tbody').append(`
+              <tr id="${students[i][1]}">
+                <td>${i+1}</td>
+                <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+                <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
+              </tr>
+            `) 
+          } 
+        }
+        
+      });
+})
+
+
+
+
+
+
+
+
+
+function remove_student(id){ 
+  var standard = $("#select_standard").val()
+  var class_val = $('#select_class').val() 
+  var student_id = id
+  
+
+  $.ajax({ 
+    url: "/dashboard/views_admin_panel_db_operations/manage_classes_remove_student/", 
+    data: {"standard":standard,'class':class_val,'student_id':student_id},
+    success: function(data){ 
+      var elem = document.getElementById("add_student_modal");
+      var instance = M.Modal.getInstance(elem);
+      instance.close();
+      var students = data.students
+      var other_students = data.other_students
+
+      $('div.select_other_students').show();
+      $('select#select_other_students').html('') 
+      $('select#select_other_students').append(`<option value="" disabled selected>Select Student</option> `)
+      for(var x=0;x<other_students.length;x++){
+          $('select#select_other_students').append(`
+          <option id="${other_students[x][1]}" value="${other_students[x][1]}">${other_students[x][0]}</option> 
+          `)
+      }
+
+
+
+      $('#display_class_students_tbody').html('')
+      for(var i=0;i<students.length;i++){
+        $('#display_class_students_tbody').append(`
+        <tr id="${students[i][1]}">
+          <td>${i+1}</td>
+          <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+          <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
+        </tr>
+        `) 
+      } 
+
+
+
+
+    }
+  }); 
+ 
+
+  
+}
+
+
+
+
+
+
+
+
+$('#select_standard').change(function(e){     
+    $('#add_student_modal_button').hide();
+    $('#delete_class_button').hide();
+    $('div.select_class').hide();
+    $('div.select_subject').hide();
+    $('.display_class_students').hide()
+    $('.nextbtn').hide();
+    var standard = $(this).find(":selected").val()
+    standard_value = standard 
+    $.ajax({
+        url: "/dashboard/get_classes", 
+        data: {"standard":standard_value},
+        success: function(data){
+            var classes = data.classes
+            $('div.select_class').show();
+            $('select#select_class').html('') 
+            $('select#select_class').append(`<option value="" disabled selected>Select Class</option> `)
+            for(var x=0;x<classes.length;x++){
+                $('select#select_class').append(`
+                <option value="${classes[x]}">${classes[x]}</option> 
+                `)
+            }
+            $('#add_class_modal_button').show();
+        }
+      });
+      
+})
+
+</script>
+
+
+ 
+{% endblock 'engine' %}
