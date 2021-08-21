@@ -15,42 +15,40 @@ def checkfolder():
 
 
 
-# Create your views here.
-def attendance(request):
-    teachers = Teacher.objects.all()
-    if request.method=='POST':
-        data = request.POST['data'].split(',')
-        incoming_teacher = request.POST['teacher']
-        incoming_standard = request.POST['standard']
-        incoming_class = request.POST['class']
-        incoming_subject = request.POST['subject'] 
-        
-        data = [[(x[:-1]),x[-1]] for x in data]
-        data_set=[]
-        all_students = Student.objects.filter(uid__in=[x[0] for x in data])
-        for index,student in enumerate(all_students):
-            record = [x for x in data if student.uid==x[0]][0]
-            record.insert(0,student.name) 
-            if record[-1]=='p':record[-1] = 'Present'
-            if record[-1]=='a':record[-1] = 'Absent'
-            if record[-1]=='l':record[-1] = 'Late' 
-            additional=[incoming_teacher,incoming_standard,incoming_class,incoming_subject]
-            record= [index+1]+ additional+[record[0],record[-1]]
-            data_set.append(record)
-            print(record)
-
-        header = ['Index','Teacher','Standard','Class','Subject','Student Name','Attendance Status']
-        df = pd.DataFrame(data=data_set,columns=header)
-        checkfolder()
-        filename = str(datetime.now().strftime("%m-%d-%Y-%H-%M-%S"))+'.csv'
-        file_path = os.path.join(report_folder,filename)
-        df.to_csv(file_path,index=False)
+# # Create your views here.
+# def attendance(request):
+#     teachers = Teacher.objects.all()
+#     if request.method=='POST':
+#         data = request.POST['data'].split(',')
+#         incoming_teacher = request.POST['teacher']
+#         incoming_standard = request.POST['standard']
+#         incoming_class = request.POST['class']
+#         incoming_subject = request.POST['subject']       
+#         data = [[(x[:-1]),x[-1]] for x in data]
+#         data_set=[]
+#         all_students = Student.objects.filter(uid__in=[x[0] for x in data])
+#         for index,student in enumerate(all_students):
+#             record = [x for x in data if student.uid==x[0]][0]
+#             record.insert(0,student.name) 
+#             if record[-1]=='p':record[-1] = 'Present'
+#             if record[-1]=='a':record[-1] = 'Absent'
+#             if record[-1]=='l':record[-1] = 'Late' 
+#             additional=[incoming_teacher,incoming_standard,incoming_class,incoming_subject]
+#             record= [index+1]+ additional+[record[0],record[-1]]
+#             data_set.append(record)
+#             print(record)
+#         header = ['Index','Teacher','Standard','Class','Subject','Student Name','Attendance Status']
+#         df = pd.DataFrame(data=data_set,columns=header)
+#         checkfolder()
+#         filename = str(datetime.now().strftime("%m-%d-%Y-%H-%M-%S"))+'.csv'
+#         file_path = os.path.join(report_folder,filename)
+#         df.to_csv(file_path,index=False)
 
 
-        return render(request, 'root/completion.html',{'download_url':filename})
+#         return render(request, 'root/completion.html',{'download_url':filename})
     
-    else:
-        return render(request, 'root/attendance.html')
+#     else:
+#         return render(request, 'root/attendance.html')
     
 
 def download(request, filename): 
@@ -96,42 +94,8 @@ def index(request):
 
 
 
-def get_standards(request):
-    standards = Standard.objects.all()
-    standards = [x.name for x in standards]
-    print(standards)
-    return JsonResponse({'standards':standards})
-    
-
  
  
-
-
-    
-def get_classes(request):
-    current_standard = Standard.objects.get(name=request.GET['standard'])
-    classes = current_standard.class_list
-    classes = ClassList.objects.filter(standard__name=current_standard)
-    classes = [x.name for x in classes]
-    print(classes)
-    return JsonResponse({'classes':classes})
-    
-
- 
-    
-def get_subjects(request):
-    standard = request.GET['standard']
-    incoming_class = request.GET['class']
-
- 
-    print(standard)
-    current_standard = Standard.objects.get(name=standard)
-    subjects = Subject.objects.filter(standard__name=current_standard)
-    subjects = [x.name for x in subjects]
-    print(subjects)
-    return JsonResponse({'subjects':subjects})
-    
-
  
  
 
