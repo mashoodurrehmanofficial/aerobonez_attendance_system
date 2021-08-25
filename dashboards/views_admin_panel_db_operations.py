@@ -30,7 +30,6 @@ def manage_subjects(request):
     return render(request, 'dashboards/manage_subjects.html',{"standards":standards})
 
 
-
 def manage_subjects_fetch_standard_subjects(request):
     incoming_standard = request.GET["standard"] 
     subjects = list(Subject.objects.filter(standard__name=incoming_standard).order_by('name').values()) 
@@ -69,13 +68,11 @@ def manage_subjects_remove_subject(request):
     return response
 
 
-
 def manage_standards_add(request): 
     incoming_standard = request.GET['standard']
     if Standard.objects.filter(name=incoming_standard).exists():pass
     else:Standard(name=incoming_standard).save()
     return JsonResponse({})
-
 
 
 def manage_standards_delete(request,id): 
@@ -112,6 +109,8 @@ def manage_classes_delete(request):
     incoming_standard = request.GET['standard']
     incoming_class = request.GET['class'] 
     ClassList.objects.filter(name=incoming_class,uid=incoming_standard).delete()
+
+   
     return JsonResponse({})
 
 
@@ -119,7 +118,6 @@ def manage_classes_delete(request):
 def manage_student(request,uid): 
     student = Student.objects.get(uid=uid)
     return render(request, 'dashboards/manage_student_extract_data.html',{"student":student})
-
 
 
 def manage_classes_add_student(request): 
@@ -176,10 +174,21 @@ def manage_students_add(request):
 def manage_students_extract_data(request,id): 
     student = Student.objects.get(id=id)
     enrolled_classes = ClassList.objects.filter(student=student)
+
+    enrolled_subjects = Student_Subject_Model.objects.filter(student=student)
+    enrolled_subjects = [x.subject.name for x in  enrolled_subjects]
+
+    enrolled_standard = Standard.objects.filter(class_list=ClassList.objects.filter(student=student).first()).first()
+    other_subjects = Subject.objects.filter(~Q(name__in=enrolled_subjects),standard__name=enrolled_standard)
+
     return render(request, 'dashboards/manage_student_extract_data.html',{
         "student":student,
-        'enrolled_classes':enrolled_classes
+        'enrolled_classes':enrolled_classes,
+        'enrolled_subjects':enrolled_subjects,
+        'other_subjects':other_subjects,
+        'enrolled_standard':enrolled_standard,
     })
+
 
 
 def manage_students_remove_class_from_profile(request): 
@@ -189,12 +198,45 @@ def manage_students_remove_class_from_profile(request):
     student = Student.objects.get(id=student_id)
     target_class = ClassList.objects.filter(standard__name=incoming_standard,name=class_name).first()
     target_class.student.remove(student)
+
+    Student_Subject_Model.objects.filter(class_name=class_name,standard_name=incoming_standard).delete()
+    
+
     return JsonResponse({})
+
+
+
+def manage_students_remove_subject_from_profile(request): 
+    incoming_subject = request.GET['subject'] 
+    student_id = request.GET['student_id']
+    student = Student.objects.get(id=student_id)
+    target_record = Student_Subject_Model.objects.filter(subject__name=incoming_subject,student=student).first()
+    target_record.delete()
+    return JsonResponse({})
+
+
+
+
+def manage_students_attach_subject_to_profile(request): 
+    incoming_subject = request.GET['subject'] 
+    incoming_standard = request.GET['standard'] 
+    student_id = request.GET['student_id']
+    student = Student.objects.get(id=student_id)
+    incmoing_class = class_list=ClassList.objects.filter(student=student).first()
+    Student_Subject_Model(
+        student = student,
+        subject = Subject.objects.filter(name=incoming_subject).first(),
+        class_name=incmoing_class,
+        standard_name = incoming_standard
+    ).save()
+    
+    return JsonResponse({})
+
 
 
 def manage_teachers_allow_teachers(request): 
     if request.user.is_superuser:
-        waiting_list_teachers = TeacherProfile.objects.all()
+        waiting_list_teachers = TeacherProfile.objects.all().order_by('is_allowed')
         data = {
             'waiting_list_teachers':waiting_list_teachers
         }

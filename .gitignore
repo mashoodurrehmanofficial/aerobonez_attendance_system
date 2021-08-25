@@ -132,4 +132,6 @@ dmypy.json
 .pyre/
 /test.py
 /test2.py
+/test2.py
+*test*.py
 *.csv
