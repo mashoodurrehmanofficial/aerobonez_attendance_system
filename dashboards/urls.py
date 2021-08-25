@@ -75,6 +75,8 @@ urlpatterns = [
    
     path('/views_admin_panel_db_operations/manage_student/<str:uid>', manage_student, name='manage_student'),   
     path('/views_admin_panel_db_operations/manage_students_remove_class_from_profile/', manage_students_remove_class_from_profile, name='manage_students_remove_class_from_profile'),   
+    path('/views_admin_panel_db_operations/manage_students_remove_subject_from_profile/', manage_students_remove_subject_from_profile, name='manage_students_remove_subject_from_profile'),   
+    path('/views_admin_panel_db_operations/manage_students_attach_subject_to_profile/', manage_students_attach_subject_to_profile, name='manage_students_attach_subject_to_profile'),   
     
     
     

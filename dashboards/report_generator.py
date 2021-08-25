@@ -1,6 +1,5 @@
 import os,shutil
-import os,sys,django,pandas as pd
-from numpy.core.fromnumeric import ptp
+import os,sys,django,pandas as pd 
 sys.path.append( os.path.join(os.path.dirname(__file__), 'PROJECT'))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "PROJECT.settings")
 django.setup()

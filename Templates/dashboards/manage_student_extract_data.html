@@ -12,7 +12,7 @@
 
 
   <center>
-    <h4><b>Student Data</b></h4>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Student Data</b></h4> <br>
   </center> 
  <form action="" class="z-depth-2 " style="border-radius: 20px;padding:20px">
   <div class="input-field ">
@@ -26,19 +26,14 @@
  </form>
 
 
-  
+  <br>
   <center>
-    <h4><b>Enrolled classes</b></h4>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b>Enrolled classes</b></h4> <br>
   </center> 
+  <a href="/dashboard/views_admin_panel_db_operations/manage_classes/"><button class="z-depth-2 blue accent-3 btn modal-trigger btn right">Add Class <i class="material-icons right">add</i> </button></a>
+
+
  <div>
- 
-  
-
-   
-
-
-
-
 
   <table class="striped">
     <thead>
@@ -64,12 +59,99 @@
 
     </tbody>
   </table>
-
 </div> 
 
  
 
+
+
+
+
+
+
+
+  <!-- Modal Structure -->
+  <div id="attach_subject_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Attach another Subject</b></h4>
+      <form action="" id="attach_subject_form">
+        
+        <div class="select_other_students">
+          <label>Select Subject</label>
+          <select name='class' class="browser-default"  id="select_other_subjects">
+
+            <option value="" disabled selected>Select another Subject</option>
+          
+            {% for other_subject in other_subjects %}
+            <option value="{{other_subject}}">{{other_subject}}</option>
+              
+            {% endfor %}
+          </select>
+          <br>
+      </div>
+        <button type="submit" class="btn right">Attach another Subject</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+
+  <br>
+  <center>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Enrolled Subjects</b></h4> <br>
+  </center> 
+  <button  id="attach_subject_modal_button" data-target="attach_subject_modal" class="z-depth-2 blue accent-3 btn modal-trigger btn right">Attach subject to Student <i class="material-icons right">link</i> </button>
+
+
+ <div>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Index</th> 
+        <th>Subject</th>
+        <th>Remove Subject</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+      {% for subject in enrolled_subjects %}
+      <td>{{ forloop.counter }}</td>
+      <td>{{subject}}</td> 
+      <td> <i style="cursor: pointer;" id="{{subject}}__{{student.id}}" class="remove_subject_from_profile  material-icons  red-text"> delete</i>  </td>
+
+        </tr>
+        {% endfor %}
+
+
+    </tbody>
+  </table>
+</div> 
+
+ 
+<input type="text" style="width:1px;height:1px" name="" id="enrolled_standard" value="{{enrolled_standard}}">
+
+
 <script>
+
+
+
+
+  
+$('.remove_subject_from_profile').click(function(e){
+  var data = this.id.split("__");
+  var subject = data[0] 
+  var student_id = data[1] 
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_subject_from_profile", 
+    data: {"subject":subject,'student_id':student_id},
+    success: function(data){ 
+     location.reload()
+    }
+  }); 
+})
+
 
 $('.remove_class_from_profile').click(function(e){
   var data = this.id.split("__");
@@ -86,19 +168,18 @@ $('.remove_class_from_profile').click(function(e){
 })
 
 
-
-$('#add_standard_form').submit(function(e){
+$('#attach_subject_form').submit(function(e){
   e.preventDefault()
-  var standard = $('#standard').val()
+  var standard = $('#enrolled_standard').val()
+  var other_subject = $('#select_other_subjects').val()
+  var student_id = "{{student.id}}" 
   $.ajax({
-    url: "/dashboard/views_admin_panel_db_operations/manage_students_remove_class_from_profile", 
-    data: {"standard":standard},
-    success: function(data){
-      alert(1)
-     // location.reload()
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_attach_subject_to_profile/", 
+    data: {"standard":standard,'subject':other_subject,'student_id':student_id},
+    success: function(data){ 
+     location.reload()
     }
   }); 
-
 })
 </script>
 

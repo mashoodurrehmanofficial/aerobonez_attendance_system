@@ -23,9 +23,23 @@
 
 
 <div style="margin:10px  10px">
-  <button id="mark_all_present" class="btn">Mark all Present</button> <br><br>
+  <div class="row">
+    <div class="col s12 l6 m6">
 
+      <button id="mark_all_present" class="btn">Mark all Present</button>  <br><br>
+    </div>
+    <div class="col s12 l6 m6">
+      {% if normal_date %}
+      <input type="button" class="datepicker btn"  name="date" value="{{normal_date}}">
+      
+      {% else %}
+      <input type="button" class="datepicker btn"  name="date" value="Select date">
+        
+      {% endif %}
+      
 
+    </div>
+  </div>
   <form action="/dashboard/teacherpanel/load_attendance_sheet/{{report_uid}}" method="POST"> {% csrf_token %}
     <table class="bordered">
       <thead>
@@ -127,11 +141,11 @@
 
     <input type="text" name="report_uid" id="{{report_uid}}" value="{{report_uid}}" style="width:1px ; height:1px !important">
     <input type="text" name="data" id="data" style="width:1px ; height:1px !important">
+    <input type="text"  id="date"  name="date" style="width:1px ; height:1px !important" value="{{normal_date}}">
 
 
 
-
-    <button class="btn" type="submit">Submit</button>
+    <button class="btn" type="submit">Submit</button> <br><br>
 
   </form>
 
@@ -141,13 +155,22 @@
 
 
 <script>
-
+  $('.datepicker').change(function(e){
+    var date = $('.datepicker').val()
+    $('#date').val(date)
+  })
+  
   var list = []
   $('form').submit(function (e) {
+    var date = $('.datepicker').val()
     var ids = "{{ids}}".replace('[', '').replace(']', '').split(',')
     if ($('.with-gap:checked').length < ids.length) {
       alert("Please fill the entire Attendance Sheet !")
       e.preventDefault()
+    }
+    else if(date=='Select date' || date==undefined || date==''){
+      alert("Please select Date !")
+      e.preventDefault() 
     }
     else {
       var decision = confirm("Are u sure to submit this attendance form ?")

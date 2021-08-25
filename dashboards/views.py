@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import os,pandas as pd,uuid
 from datetime import datetime
+from dateutil import parser
+
 
 report_folder = os.path.join(os.getcwd(),'Attendance Report') 
 def checkfolder():
@@ -30,16 +32,19 @@ def mark_attendance(request):
     teacher = TeacherProfile.objects.get(name=request.user)
     standards = Standard.objects.all()
     standards = [x.name for x in standards]
-    if request.method=='POST':
-        print(request.POST)
+    if request.method=='POST': 
         incoming_teacher = request.POST['teacher']
         incoming_standard = request.POST['standard']
         incoming_class = request.POST['class']
         incoming_subject = request.POST['subject'] 
-        students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
-        students = [[x.name,x.uid,index+1] for index,x in enumerate(students)]
+
+        students = Student_Subject_Model.objects.filter(
+            subject__name=incoming_subject,standard_name=incoming_standard,class_name=incoming_class).order_by('student__name')
+        
+        students = [[x.student.name,x.student.uid] for x in students]
+        # students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
+        # students = [[x.name,x.uid,index+1] for index,x in enumerate(students)]
         ids = [int(x[-1]) for x in students]
-        print(students) 
         return render(request, 'dashboards/attendance_sheet.html',{
             'students':students,'ids':ids,'teacher':incoming_teacher,'standard':incoming_standard,
             'class':incoming_class,'subject':incoming_subject,'teacher':teacher
@@ -49,13 +54,15 @@ def mark_attendance(request):
 
 
 def submit_attendance_sheet(request):
-    teachers = Teacher.objects.all()
     if request.method=='POST':
-        data = request.POST['data'].split(',')
-        incoming_teacher = request.POST['teacher']
-        incoming_standard = request.POST['standard']
-        incoming_class = request.POST['class']
-        incoming_subject = request.POST['subject']       
+        data                = request.POST['data'].split(',')
+        incoming_teacher    = request.POST['teacher']
+        incoming_standard   = request.POST['standard']
+        incoming_class      = request.POST['class']
+        incoming_subject    = request.POST['subject']      
+        incoming_date       = request.POST['date']      
+        date_object = parser.parse(str(incoming_date)).date()
+        
         data = [[(x[:-1]),x[-1]] for x in data]
         data_set=[]
         all_students = Student.objects.filter(uid__in=[x[0] for x in data])
@@ -71,7 +78,7 @@ def submit_attendance_sheet(request):
             record= [report_uid]+ [teacher_uid]+ additional+ [student.uid] +[record[0],record[-1]]
             data_set.append(record)
             print(record)
-        submit_time = str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))
+        submit_time = str(datetime.now().strftime("%m-%d-%Y")) 
         AttendanceReport.objects.bulk_create(
             [AttendanceReport(
                     report_uid           = x[0],
@@ -83,7 +90,9 @@ def submit_attendance_sheet(request):
                     student_secret_id    = x[6],
                     student_name         = x[7],
                     attendance_status    = x[8],
-                    submit_time          = submit_time
+                    submit_time          = submit_time,
+                    normal_date          = incoming_date,
+                    submit_date_field    = date_object
             ) for x in data_set]
         )
         return redirect('teacherpanel')
@@ -101,26 +110,31 @@ def view_attendance_directory(requset):
 
 def load_attendance_sheet(request, report_uid):
     if request.method=='POST':
-        data = request.POST['data'].split(',')    
+        data = request.POST['data'].split(',')   
+        incoming_date       = request.POST['date'] 
+        date_object = parser.parse(str(incoming_date)).date()
         data = [[(x[:-1]),x[-1]] for x in data]
         for record in data:
             if record[-1]=='p':record[-1] = 'Present'
             if record[-1]=='a':record[-1] = 'Absent'
             if record[-1]=='l':record[-1] = 'Late' 
-        
+            
         
         target_records_in_db = AttendanceReport.objects.filter(report_uid=report_uid)
         for target_record in target_records_in_db:
             temp_record = [x for x in data if x[0]==target_record.student_secret_id][0]
             if temp_record:
                 target_record.attendance_status = temp_record[-1]
+                target_record.submit_date_field = date_object 
+                target_record.normal_date       = incoming_date 
                 target_record.save()
 
     students = AttendanceReport.objects.filter(report_uid=report_uid)
+    normal_date = students.first().normal_date
     students = [[x.student_name,x.student_secret_id,x.attendance_status] for x in students] 
     teacher = TeacherProfile.objects.get(user=request.user)
     return render(request, "dashboards/update_attendance_sheet.html",{
-        'report_uid':report_uid,'students':students,'teacher':teacher
+        'report_uid':report_uid,'students':students,'teacher':teacher,'normal_date':normal_date
         })
 
 
@@ -136,6 +150,7 @@ def get_classes(request):
     classes = [x.name for x in classes]
     print(classes)
     return JsonResponse({'classes':classes})
+    
     
 def get_subjects(request):
     standard = request.GET['standard']

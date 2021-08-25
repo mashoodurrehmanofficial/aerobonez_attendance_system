@@ -37,8 +37,17 @@
             <tr>          
                     <td>{{report.standard}}</td>            
                     <td>{{report.class_name}}</td>            
-                    <td>{{report.subject}}</td>            
+                    <td>{{report.subject}}</td>    
+                    {% if report.normal_date %}
+                      
+                    <td>{{report.normal_date}}</td>            
+                    {% else %}
                     <td>{{report.submit_time}}</td>            
+                      
+                    {% endif %}
+                    
+                    
+
                     <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
                 </tr> 
             {% endfor %}  
