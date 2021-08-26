@@ -75,12 +75,35 @@
   <!-- Modal Trigger -->
 
 
+  <!-- deattach_subject_modal -->
+  <div id="deattach_subject_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Deattach Subject</b></h4>
+      <form action="" id="deattach_subject_form">
+        
+        <div class="select_other_students" style="display: none">
+          <label>Select Subject</label>
+          <select name='class' class="browser-default"  id="select_deattach_subject">
+          </select>
+          <br>
+      </div>
+        <button type="submit" class="btn right">Deattach Subject</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  <!-- Modal Trigger -->
+
+
 
 
   <button style="display: none;" id="delete_class_button" class="btn red">Delete Class <i class="material-icons right">delete</i> </button>
 
   <button style="display: none" id="add_class_modal_button" data-target="add_class_modal" class="btn modal-trigger btn right">Add Class</button>
   <button style="display: none;margin-right: 20px;" id="add_student_modal_button" data-target="add_student_modal" class="btn modal-trigger btn right">Add another Student</button>
+  <!-- <button style="display: none;margin-right: 20px;" id="attach_subject_modal_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Attach Subject</button> -->
+  <button style="display: none;margin-right: 20px;" id="deattach_subject_modal_button" data-target="deattach_subject_modal" class="btn modal-trigger btn right">Deattach  Subject</button>
 
 
 
@@ -102,6 +125,30 @@
 
 <script>
   
+
+  //id="deattach_subject_form">  select_deattach_subject
+
+
+$('#deattach_subject_form').submit(function(e){
+  e.preventDefault()
+  var subject = $('#select_deattach_subject').val()
+  var standard = $("#select_standard").val()
+  var class_name = $("#select_class").val()
+  $.ajax({ 
+    url: "/dashboard/views_admin_panel_db_operations/manage_classes_deattach_subject", 
+    data: {"standard":standard,'class_name':class_name,'subject':subject},
+    success: function(data){ 
+      location.reload()
+    }
+  })
+  
+
+
+})
+
+
+
+
   
 $('#add_student_form').submit(function(e){
     e.preventDefault()
@@ -197,6 +244,8 @@ $('#add_class_form').submit(function(e){
 
 $('#select_class').change(function(e){
     $('#add_student_modal_button').show();
+    $('#attach_subject_modal_button').show();
+    $('#deattach_subject_modal_button').show();
     $('#delete_class_button').show();
     $('.display_class_students').hide()
     $('.nextbtn').hide();
@@ -208,6 +257,22 @@ $('#select_class').change(function(e){
           $('.display_class_students').show()
           var students = data.students
           var other_students = data.other_students
+          var subjects = data.subjects
+          
+
+
+
+          $('div.select_deattach_subject').show();
+          $('select#select_deattach_subject').html('') 
+          $('select#select_deattach_subject').append(`<option value="" disabled selected>Select Subject</option> `)
+          for(var x=0;x<subjects.length;x++){
+              $('select#select_deattach_subject').append(`
+              <option id="${subjects[x]}" value="${subjects[x]}">${subjects[x]}</option> 
+              `)
+          }
+
+
+
 
 
           $('div.select_other_students').show();
@@ -218,6 +283,9 @@ $('#select_class').change(function(e){
               <option id="${other_students[x][1]}" value="${other_students[x][1]}">${other_students[x][0]}</option> 
               `)
           }
+
+
+
 
 
 
@@ -301,6 +369,8 @@ function remove_student(id){
 
 $('#select_standard').change(function(e){     
     $('#add_student_modal_button').hide();
+    $('#attach_subject_modal_button').hide();
+    $('#deattach_subject_modal_button').hide();
     $('#delete_class_button').hide();
     $('div.select_class').hide();
     $('div.select_subject').hide();
@@ -313,6 +383,7 @@ $('#select_standard').change(function(e){
         data: {"standard":standard_value},
         success: function(data){
             var classes = data.classes
+            
             $('div.select_class').show();
             $('select#select_class').html('') 
             $('select#select_class').append(`<option value="" disabled selected>Select Class</option> `)
@@ -321,6 +392,8 @@ $('#select_standard').change(function(e){
                 <option value="${classes[x]}">${classes[x]}</option> 
                 `)
             }
+
+
             $('#add_class_modal_button').show();
         }
       });

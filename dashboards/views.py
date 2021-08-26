@@ -147,8 +147,10 @@ def get_classes(request):
     current_standard = Standard.objects.get(name=request.GET['standard'])
     classes = current_standard.class_list
     classes = ClassList.objects.filter(standard__name=current_standard)
+    
     classes = [x.name for x in classes]
-    print(classes)
+    
+
     return JsonResponse({'classes':classes})
     
     

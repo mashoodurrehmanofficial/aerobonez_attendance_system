@@ -59,6 +59,7 @@ urlpatterns = [
 
 
     path('/views_admin_panel_db_operations/manage_classes_add_student', manage_classes_add_student, name='manage_classes_add_student'),   
+    path('/views_admin_panel_db_operations/manage_classes_deattach_subject', manage_classes_deattach_subject, name='manage_classes_deattach_subject'),   
     path('/views_admin_panel_db_operations/manage_classes_remove_student/', manage_classes_remove_student, name='manage_classes_remove_student'),   
 
 

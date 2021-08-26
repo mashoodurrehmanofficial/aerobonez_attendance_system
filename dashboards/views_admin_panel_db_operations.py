@@ -1,3 +1,4 @@
+from django.conf.urls import include
 from django.shortcuts import render
 from django.contrib.auth.hashers import make_password
 from django.http import  JsonResponse, response
@@ -94,7 +95,16 @@ def get_class_students(request):
     students = [[x.name,x.id] for index,x in enumerate(students)]
     other_students = Student.objects.filter(~Q(classlist__name=incoming_class,classlist__uid=incoming_standard)).order_by('name')
     other_students = [[x.name,x.id] for index,x in enumerate(other_students)]
-    return JsonResponse({'students':students,'other_students':other_students})
+    
+    
+    subjects = Subject.objects.filter(standard__name=incoming_standard)
+    subjects = [x.name for x in subjects]
+    print("subjects -------------")
+    print(subjects)
+
+
+
+    return JsonResponse({'students':students,'other_students':other_students,'subjects':subjects})
 
 
 def manage_classes_add(request): 
@@ -133,6 +143,26 @@ def manage_classes_add_student(request):
     other_students = Student.objects.filter(~Q(classlist__name=incoming_class,classlist__uid=incoming_standard)).order_by('name')
     other_students = [[x.name,x.id] for index,x in enumerate(other_students)]
     return JsonResponse({"students":students,'other_students':other_students})
+
+
+def manage_classes_deattach_subject(request): 
+    incoming_standard = request.GET['standard']
+    incoming_class = request.GET['class_name']  
+    incoming_subject = request.GET['subject']   
+    target_records = Student_Subject_Model.objects.filter(
+        subject=Subject.objects.get(name=incoming_subject),
+        standard_name=incoming_standard,
+        class_name=incoming_class,
+    ) 
+    target_records.delete()
+    return JsonResponse({})
+
+
+
+
+
+
+
 
 
 def manage_classes_remove_student(request): 
