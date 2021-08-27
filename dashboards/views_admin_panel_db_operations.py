@@ -154,7 +154,36 @@ def manage_classes_deattach_subject(request):
         standard_name=incoming_standard,
         class_name=incoming_class,
     ) 
-    target_records.delete()
+    try:target_records.delete()
+    except :pass
+    return JsonResponse({})
+
+
+
+def manage_classes_attach_subject(request): 
+    incoming_standard = request.GET['standard']
+    incoming_class = request.GET['class_name']  
+    incoming_subject = request.GET['subject']   
+    students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard)
+    records = [
+        student for student in students if not Student_Subject_Model.objects.filter(
+            student=student,
+            subject=Subject.objects.get(name=incoming_subject),
+            standard_name=incoming_standard,
+            class_name=incoming_class,
+        ).exists()
+    ]
+    
+    try:
+        Student_Subject_Model.objects.bulk_create(
+            [Student_Subject_Model(
+                student=x,
+                subject=Subject.objects.get(name=incoming_subject),
+                standard_name=incoming_standard,
+                class_name=incoming_class,
+            ) for x in records]
+        )
+    except:pass
     return JsonResponse({})
 
 

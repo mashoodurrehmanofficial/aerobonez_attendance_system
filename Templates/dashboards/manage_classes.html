@@ -95,6 +95,26 @@
 
   <!-- Modal Trigger -->
 
+  <!-- attach_subject_modal -->
+  <div id="attach_subject_modal" class="modal">
+    <div class="modal-content"> 
+      <h4><b>Attach Subject</b></h4>
+      <form action="" id="attach_subject_form">
+        
+        <div class="select_other_students" >
+          <label>Select Subject</label>
+          <select name='class' class="browser-default"  id="select_attach_subject">
+          </select>
+          <br>
+      </div>
+        <button type="submit" class="btn right">Attach Subject</button>
+      </form>
+      <br><br>
+    </div>
+  </div>
+
+  <!-- Modal Trigger -->
+
 
 
 
@@ -102,7 +122,7 @@
 
   <button style="display: none" id="add_class_modal_button" data-target="add_class_modal" class="btn modal-trigger btn right">Add Class</button>
   <button style="display: none;margin-right: 20px;" id="add_student_modal_button" data-target="add_student_modal" class="btn modal-trigger btn right">Add another Student</button>
-  <!-- <button style="display: none;margin-right: 20px;" id="attach_subject_modal_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Attach Subject</button> -->
+  <button style="display: none;margin-right: 20px;" id="attach_subject_modal_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Attach Subject</button>
   <button style="display: none;margin-right: 20px;" id="deattach_subject_modal_button" data-target="deattach_subject_modal" class="btn modal-trigger btn right">Deattach  Subject</button>
 
 
@@ -137,13 +157,29 @@ $('#deattach_subject_form').submit(function(e){
   $.ajax({ 
     url: "/dashboard/views_admin_panel_db_operations/manage_classes_deattach_subject", 
     data: {"standard":standard,'class_name':class_name,'subject':subject},
-    success: function(data){ 
-      location.reload()
+    success: function(data){   
+      M.Modal.getInstance(document.getElementById("deattach_subject_modal")).close();
+      M.toast({html: 'Subject Deattached to class',classes: 'rounded green'})
     }
-  })
+  }) 
+})
+
+
+$('#attach_subject_form').submit(function(e){
+  e.preventDefault()
+  var subject = $('#select_attach_subject').val()
+  var standard = $("#select_standard").val()
+  var class_name = $("#select_class").val()
   
-
-
+  $.ajax({ 
+    url: "/dashboard/views_admin_panel_db_operations/manage_classes_attach_subject", 
+    data: {"standard":standard,'class_name':class_name,'subject':subject},
+    success: function(data){   
+      M.Modal.getInstance(document.getElementById("attach_subject_modal")).close();
+      M.toast({html: 'Subject Attached to class',classes: 'rounded green'})
+    }
+  }) 
+ 
 })
 
 
@@ -182,7 +218,7 @@ $('#add_student_form').submit(function(e){
           $('#display_class_students_tbody').append(`
           <tr id="${students[i][1]}">
             <td>${i+1}</td>
-            <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+            <td>  <a  target="_blank" href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
             <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
           </tr>
           `) 
@@ -273,6 +309,17 @@ $('#select_class').change(function(e){
 
 
 
+          $('div.select_attach_subject').show();
+          $('select#select_attach_subject').html('') 
+          $('select#select_attach_subject').append(`<option value="" disabled selected>Select Subject</option> `)
+          for(var x=0;x<subjects.length;x++){
+              $('select#select_attach_subject').append(`
+              <option id="${subjects[x]}" value="${subjects[x]}">${subjects[x]}</option> 
+              `)
+          }
+
+
+
 
 
           $('div.select_other_students').show();
@@ -294,7 +341,7 @@ $('#select_class').change(function(e){
             $('#display_class_students_tbody').append(`
               <tr id="${students[i][1]}">
                 <td>${i+1}</td>
-                <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+                <td>  <a  target="_blank" href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
                 <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
               </tr>
             `) 
@@ -344,7 +391,7 @@ function remove_student(id){
         $('#display_class_students_tbody').append(`
         <tr id="${students[i][1]}">
           <td>${i+1}</td>
-          <td>  <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
+          <td>  <a target="_blank"  href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/${students[i][1]}">${students[i][0]}</a>  </td>
           <td onclick="remove_student(${students[i][1]})"> <i class="material-icons  red-text"> delete</i>  </td>
         </tr>
         `) 

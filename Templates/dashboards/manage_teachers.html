@@ -53,7 +53,7 @@
       <tr>
       {% for teacher in teachers %}
       <td>{{ forloop.counter }}</td>
-      <td> <a href="/dashboard/views_admin_panel_db_operations/manage_teachers_extract_data/{{teacher.id}}">   {{teacher.name}}</a> </td>
+      <td> <a target="_blank"  href="/dashboard/views_admin_panel_db_operations/manage_teachers_extract_data/{{teacher.id}}">   {{teacher.name}}</a> </td>
       <td> <a href="/dashboard/views_admin_panel_db_operations/manage_teachers_delete/{{teacher.id}}"><i class="material-icons  red-text"> delete</i></a>  </td>
 
         </tr>

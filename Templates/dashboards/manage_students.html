@@ -56,7 +56,7 @@
       <tr>
       {% for student in students %}
       <td>{{ forloop.counter }}</td>
-      <td> <a href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/{{student.id}}">   {{student.name}}</a> </td>
+      <td> <a  target="_blank" href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/{{student.id}}">   {{student.name}}</a> </td>
       <td> <a href="/dashboard/views_admin_panel_db_operations/manage_students_delete/{{student.id}}"><i class="material-icons  red-text"> delete</i></a>  </td>
 
         </tr>
