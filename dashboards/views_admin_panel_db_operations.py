@@ -424,3 +424,6 @@ def generate_attendance_report(request):
 
 def generate_weekly_report(request): 
     return weekly_report_generator()
+
+def download_db(request): 
+    return  1

@@ -86,10 +86,13 @@ urlpatterns = [
     path('/views_admin_panel_db_operations/manage_reports/generate_absent_report', generate_absent_report, name='generate_absent_report'),   
     path('/views_admin_panel_db_operations/manage_reports/generate_attendance_report', generate_attendance_report, name='generate_attendance_report'),   
     path('/views_admin_panel_db_operations/manage_reports/generate_weekly_report', generate_weekly_report, name='generate_weekly_report'),   
+   
+   
+    path('/views_admin_panel_db_operations/download_db', download_db, name='download_db'),   
 
 
 
-
+    
 
 
 
