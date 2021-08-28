@@ -426,4 +426,7 @@ def generate_weekly_report(request):
     return weekly_report_generator()
 
 def download_db(request): 
-    return  1
+
+    file_path = os.path.join(os.path.join(os.getcwd(),'db.sqlite3'))
+    response = FileResponse(open(file_path, 'rb'))
+    return response

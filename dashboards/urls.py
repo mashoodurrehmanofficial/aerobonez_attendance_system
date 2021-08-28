@@ -88,7 +88,7 @@ urlpatterns = [
     path('/views_admin_panel_db_operations/manage_reports/generate_weekly_report', generate_weekly_report, name='generate_weekly_report'),   
    
    
-    path('/views_admin_panel_db_operations/download_db', download_db, name='download_db'),   
+    path('/views_admin_panel_db_operations/manage_reports/download_db', download_db, name='download_db'),   
 
 
 
