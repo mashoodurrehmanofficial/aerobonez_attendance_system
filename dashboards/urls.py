@@ -89,6 +89,7 @@ urlpatterns = [
    
    
     path('/views_admin_panel_db_operations/manage_reports/download_db', download_db, name='download_db'),   
+    path('/views_admin_panel_db_operations/manage_reports/download_bak/<str:filename>', download_bak, name='download_db'),   
 
 
 
