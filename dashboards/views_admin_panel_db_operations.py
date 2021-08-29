@@ -422,6 +422,10 @@ def manage_reports(request):
 
 
 def generate_absent_report(request,absent_report_date): 
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+ 
+  
     absent_report_date = parser.parse(absent_report_date).date()
     print(absent_report_date) 
     return absent_report_generator(absent_report_date)

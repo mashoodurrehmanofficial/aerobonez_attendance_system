@@ -23,12 +23,16 @@ if not os.path.exists(reports_folder):os.makedirs(reports_folder)
   
 
 def absent_report_generator(absent_report_date):
+    
     reports_folder = os.path.join(os.getcwd(),'Reports')
-    shutil.rmtree(reports_folder)
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+ 
+  
+    reports_folder = os.path.join(os.getcwd(),'Reports')
     if not os.path.exists(reports_folder):os.makedirs(reports_folder) 
 
     data  = AttendanceReport.objects.filter(submit_date_field=absent_report_date).order_by('standard')
-    
+
     absent_report_data =[]
     headers = ['Standard','Class','Subject','Unique ID','Name','Attendance Status' ,'Parent1','Relation1','Telephone1','Parent2','Relation2','Telephone2','House number']
     for record in data:
@@ -58,6 +62,7 @@ def absent_report_generator(absent_report_date):
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+    shutil.rmtree(reports_folder)
     
     return response
 
