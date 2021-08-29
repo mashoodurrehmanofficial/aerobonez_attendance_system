@@ -13,40 +13,154 @@
   </center>
 
 
-<br><br><br>
+  <br><br><br>
   <div class="row">
     <div class="col s12 m4 l4">
-      <a target="_blank" href="generate_absent_report" class="white-text btn">Generate Absent Reports</a>
-    </div>
+      <form action="" id="absentreportform" style="border-radius: 10px ;" class="z-depth-2">
+        <center> <br>
+        <h4>Absent Report</h4>
+        <div style="padding:20px 0px;">
+        <input id="absent_report_date" type="button" class="datepicker btn" value="Select date" required>
+        <br><br><br>
+        <button type="submit" class="white-text btn">Generate Absent Reports</button>
+        </div>
+        </center>
 
-        <div class="col s12 m4 l4">
-      <a target="_blank" href="generate_attendance_report" class="white-text btn">Generate Attendance Reports</a>
-    </div>
-
-        <div class="col s12 m4 l4">
-      <a target="_blank" href="generate_weekly_report"  class="white-text btn">Generate Weekly Reports</a>
-    </div>
-
-    
-  </div>
-
-  
-<br><br><br><br><br><br><br><br><br><br>
-
-  <div class="col s12 m4 l4">
-    <a target="_blank" href="download_db"  class="white-text btn grey darken-3">Download DB</a>
-  </div>
-
-
-
-</div> 
+      </form>
+ 
+        <!-- <a target="_blank" href="generate_absent_report" class="white-text btn">Generate Absent Reports</a> -->
 
  
 
+
+    </div>
+
+    <div class="col s12 m4 l4">
+
+      <form action="" id="dailyreportform" style="border-radius: 10px ;" class="z-depth-2">
+        <center> <br>
+        <h4>One day Report</h4>
+        <div style="padding:20px 0px;">
+        <input id="daily_report_date" type="button" class="datepicker btn" value="Select date" required>
+        <br><br><br>
+        <button type="submit" class="white-text btn">Generate Attendance Reports</button>
+        </div>
+        </center>
+
+      </form>
+
+
+      <!-- <a target="_blank" href="generate_attendance_report" class="white-text btn">Generate Attendance Reports</a> -->
+    </div>
+
+    <div class="col s12 m4 l4">
+
+      <form action="" id="weeklyreportform" style="border-radius: 10px ;" class="z-depth-2">
+
+        <center> <br>
+        <h4>Weekly Report</h4>
+        <div style="padding:20px 0px;">
+          
+        <input id="start_date" type="button" class="datepicker btn" value="Select date" required>
+        <input id="end_date" type="button" class="datepicker btn" value="Select date" required>
+        <br><br><br>
+        <button type="submit" class="white-text btn">Generate Weekly Reports</button>
+      
+        </div>
+        </center>
+
+      </form>
+    </div>
+
+
+  </div>
+
+
+  <br><br><br><br><br><br><br><br><br><br>
+
+  <div class="col s12 m4 l4">
+    <a target="_blank" href="download_db" class="white-text btn grey darken-3">Download DB</a>
+  </div>
+
+
+
+</div>
+
+<input type="text" class="start_date"  style="width:1px ; height:1px !important"> 
+<input type="text" class="end_date"  style="width:1px ; height:1px !important"> 
+<input type="text" class="daily_report_date"  style="width:1px ; height:1px !important"> 
+<input type="text" class="absent_report_date"  style="width:1px ; height:1px !important"> 
+
 <script>
+
+
+$('#absentreportform').submit(function(e){
+  e.preventDefault();
+  var absent_report_date = $('.absent_report_date').val() 
+  if(absent_report_date==''|| absent_report_date==undefined ){
+    alert("Please select anyt date")
+  }else{
+    window.open( window.location+'generate_absent_report'+`/${absent_report_date}`, '_blank').focus();
+  }
+})
+
+
+
+$('#dailyreportform').submit(function(e){
+  e.preventDefault();
+  var daily_report_date = $('.daily_report_date').val() 
+  if(daily_report_date==''|| daily_report_date==undefined ){
+    alert("Please select anyt date")
+  }else{
+    window.open( window.location+'generate_attendance_report'+`/${daily_report_date}`, '_blank').focus();
+  }
+})
+
+
+
+
   
+$('#weeklyreportform').submit(function(e){
+  e.preventDefault();
+  var start_date = $('.start_date').val()
+  var end_date = $('.end_date').val() 
+
+  
+  if(start_date=='' || end_date==''||start_date==undefined || end_date==undefined){
+    alert("Please select anyt date")
+  }else{
+    window.open( window.location+'generate_weekly_report'+`/${start_date}/${end_date}`, '_blank').focus();
+  }
+})
+
+
+
+
+
+
+
+$('#daily_report_date').change(function(e){ 
+  $('.daily_report_date').val($('#daily_report_date').val())
+})
+
+
+$('#end_date').change(function(e){ 
+  $('.end_date').val($('#end_date').val())
+})
+
+
+$('#start_date').change(function(e){
+  $('.start_date').val($('#start_date').val()) 
+})
+
+$('#absent_report_date').change(function(e){
+  $('.absent_report_date').val($('#absent_report_date').val()) 
+})
+
+
+
 </script>
 
 
- 
+
 {% endblock 'engine' %}

@@ -83,11 +83,10 @@ urlpatterns = [
     
     
     path('/views_admin_panel_db_operations/manage_reports/', manage_reports, name='manage_reports'),   
-    path('/views_admin_panel_db_operations/manage_reports/generate_absent_report', generate_absent_report, name='generate_absent_report'),   
-    path('/views_admin_panel_db_operations/manage_reports/generate_attendance_report', generate_attendance_report, name='generate_attendance_report'),   
-    path('/views_admin_panel_db_operations/manage_reports/generate_weekly_report', generate_weekly_report, name='generate_weekly_report'),   
+    path('/views_admin_panel_db_operations/manage_reports/generate_absent_report/<str:absent_report_date>', generate_absent_report, name='generate_absent_report'),   
+    path('/views_admin_panel_db_operations/manage_reports/generate_attendance_report/<str:daily_report_date>', generate_attendance_report, name='generate_attendance_report'),  
    
-   
+   path('/views_admin_panel_db_operations/manage_reports/generate_weekly_report/<str:start_date>/<str:end_date>', generate_weekly_report, name='generate_weekly_report'),   
     path('/views_admin_panel_db_operations/manage_reports/download_db', download_db, name='download_db'),   
     path('/views_admin_panel_db_operations/manage_reports/download_bak/<str:filename>', download_bak, name='download_db'),   
 

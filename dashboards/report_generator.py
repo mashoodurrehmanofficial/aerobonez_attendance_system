@@ -10,21 +10,25 @@ from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse,HttpResponse
 from wsgiref.util import FileWrapper
 import dateparser
+from datetime import datetime
+from dateutil import parser
 
+from django.db.models import Q
 
 
 reports_folder = os.path.join(os.getcwd(),'Reports')
 if not os.path.exists(reports_folder):os.makedirs(reports_folder)
  
- 
-from datetime import datetime,timedelta
+  
+  
 
-def absent_report_generator():
+def absent_report_generator(absent_report_date):
     reports_folder = os.path.join(os.getcwd(),'Reports')
     shutil.rmtree(reports_folder)
-    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
-    today = str(datetime.now().strftime("%m-%d-%Y"))  
-    data  = AttendanceReport.objects.filter(submit_time__startswith=today).order_by('standard')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder) 
+
+    data  = AttendanceReport.objects.filter(submit_date_field=absent_report_date).order_by('standard')
+    
     absent_report_data =[]
     headers = ['Standard','Class','Subject','Unique ID','Name','Attendance Status' ,'Parent1','Relation1','Telephone1','Parent2','Relation2','Telephone2','House number']
     for record in data:
@@ -59,42 +63,65 @@ def absent_report_generator():
 
 
 
-def attendance_report_generator():
-    today = str(datetime.now().strftime("%m-%d-%Y")) 
-    data  = AttendanceReport.objects.filter(submit_time__startswith=today).order_by('standard')
-    headers = ['Standard','Teacher name','Class','Subject','Total students','Present students','Percentage %']
 
-    standards = Standard.objects.all()
-    main_df_container=[]
-    standards = list(sorted(set([x.standard for x in data])) ) 
+
+def attendance_report_generator(daily_report_date):  
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+    # today_date_object =   parser.parse(str(datetime.now().date())).date() 
+
+    
+    data = AttendanceReport.objects.filter(submit_date_field=daily_report_date).order_by('standard')
+    standards = Standard.objects.all() 
+    main_df_container=[] 
     for standard in standards[:]:
+        print("DF index = ", standard.name)
         standard_df_container=[]
-        standard_data = [x for x in data if str(standard)==x.standard]
+        standard_data = data.filter(standard=standard.name) 
         classes_in_standard = ClassList.objects.filter(standard__name=standard)
         for class_name in classes_in_standard:
-            students_in_class = Student.objects.filter(classlist__name = class_name.name,classlist__uid = class_name.uid)
-            total_students_in_class = len(students_in_class) 
-            attended_subjects_of_today_in_class = data.filter(standard=standard,class_name=class_name.name)
+            subjects_in_class = Subject.objects.filter(standard__name=standard)
+            total_students_in_class = Student.objects.filter(classlist__name = class_name.name,classlist__uid = class_name.uid).count()
             
-            teacher_name = attended_subjects_of_today_in_class.first()
-            if teacher_name:teacher_name=teacher_name.teacher_name.split('- ')[0]
-
-            attended_subjects_of_today_in_class = list(set([x.subject for x in attended_subjects_of_today_in_class]))
-            for attended_subject in attended_subjects_of_today_in_class:
-                presents_in_subject_class = data.filter(standard=standard,class_name=class_name.name,subject=attended_subject,attendance_status= 'Present')
-                total_presents_in_subject_class = len(presents_in_subject_class)
-                percentage = str(round((total_presents_in_subject_class/total_students_in_class)*100,2))+' %'
-
-                total_school_students = len(Student.objects.all())
-                total_present_school_students = len(data.filter(attendance_status= 'Present'))
-                overall_school_percentage = str(round((total_present_school_students/total_school_students)*100,2))+' %'
-
-                record = [standard,teacher_name,class_name.name,attended_subject,total_students_in_class,total_presents_in_subject_class,percentage]
+            print("-->> Class index = ", class_name)
+            for subject_in_class in subjects_in_class:
+                print("------>> Subject index = ", subject_in_class)
+                current_subject_class_data = standard_data.filter(class_name=class_name,subject=subject_in_class)
+                students_in_subject_class = Student_Subject_Model.objects.filter(subject=subject_in_class,class_name=class_name.name,standard_name=class_name.uid)
+                total_students_in_subject_class = students_in_subject_class.count()
+                try:
+                    x = students_in_subject_class.first().student.name
+                    y = current_subject_class_data.filter(student_name=x).count()
+                    if y==0:y=1 
+                    present_students = round(current_subject_class_data.filter(~Q(attendance_status='Absent')).distinct().count()/y,2)
+                    absent_students = round(current_subject_class_data.filter(attendance_status='Absent').distinct().count()/y,2)
+                    percentage = round((present_students/total_students_in_subject_class)*100,2)
+                except:
+                    present_students = 'N/A'
+                    absent_students = 'N/A'
+                    percentage = 'N/A'
+                    total_students_in_subject_class = 'N/A'
+                if present_students==0:absent_students=total_students_in_subject_class
+                try:teacher_name = current_subject_class_data.first().teacher_name
+                except: teacher_name="No teacher marked attendance"
+                record = [
+                    standard.name,teacher_name,class_name.name,
+                    subject_in_class.name,present_students,absent_students,percentage,
+                    total_students_in_subject_class,total_students_in_class
+                ]
                 standard_df_container.append(record)
-                
-        df = pd.DataFrame(data=standard_df_container,columns=headers)
+        df=pd.DataFrame(standard_df_container,columns=['Standard','Teacher','Class','Subject','Present','Absent','Percentage %','Total students in subjective-class', 'Overall students in class'])
+        print(df)
         main_df_container.append(df)
 
+                
+            
+
+    
+    writer = pd.ExcelWriter('attendace_report.xlsx', engine='xlsxwriter')
+    for index,df in enumerate(main_df_container):
+        df.to_excel(writer, sheet_name=str(standards[index]),index=False)
+    writer.save()
 
 
     file_name = 'Attendance Report '+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.xlsx'
@@ -107,49 +134,75 @@ def attendance_report_generator():
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    # shutil.rmtree(reports_folder)
+    shutil.rmtree(reports_folder)
     return response
-    
-    
-    
-def weekly_report_generator(): 
-    data=[]
-    dates=[]
-    for day in range(0,5):
-        date_ago= f"{day} days ago" 
-        stamp=dateparser.parse(date_ago).strftime("%m-%d-%Y") 
-        dates.append(str(stamp))
-        datax  = AttendanceReport.objects.filter(submit_time__startswith=str(stamp)).order_by('standard')
-        for x  in datax:
-            data.append(x)
-    headers = ['Standard','Teacher name','Class','Subject','Percentage %']
 
-    standards = Standard.objects.all()
-    main_df_container=[]
-    standards = list(sorted(set([x.standard for x in data])) ) 
+
+    
+def weekly_report_generator(start_date,end_date): 
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+    today_date_object =   parser.parse(str(datetime.now().date())).date()
+    # start_date = parser.parse("August 23, 2021").date()
+    # end_date = parser.parse("August 29, 2021").date()
+
+    data = AttendanceReport.objects.filter(submit_date_field__range=[start_date,end_date]).order_by('standard')
+    # data = AttendanceReport.objects.filter(submit_date_field=today_date_object).order_by('standard')
+
+
+    standards = Standard.objects.all() 
+    main_df_container=[] 
     for standard in standards[:]:
+        print("DF index = ", standard.name)
         standard_df_container=[]
-        standard_data = [x for x in data if str(standard)==x.standard]
+        standard_data = data.filter(standard=standard.name) 
         classes_in_standard = ClassList.objects.filter(standard__name=standard)
         for class_name in classes_in_standard:
-            students_in_class = Student.objects.filter(classlist__name = class_name.name,classlist__uid = class_name.uid)
-            total_students_in_class = len(students_in_class) 
-            attended_subjects_of_today_in_class = [x for x in data if x.standard==standard and x.class_name==class_name.name]
+            subjects_in_class = Subject.objects.filter(standard__name=standard)
+            total_students_in_class = Student.objects.filter(classlist__name = class_name.name,classlist__uid = class_name.uid).count()
             
-            teacher_name = attended_subjects_of_today_in_class[0]
-            if teacher_name:teacher_name=teacher_name.teacher_name.split('- ')[0]
-
-            attended_subjects_of_today_in_class = list(set([x.subject for x in attended_subjects_of_today_in_class]))
-            for attended_subject in attended_subjects_of_today_in_class:
-                presents_in_subject_class = [x for x in data if x.standard==standard and x.class_name==class_name.name and x.subject==attended_subject and x.attendance_status== 'Present']
-                total_presents_in_subject_class = len(presents_in_subject_class)
-                percentage = str(round((total_presents_in_subject_class/total_students_in_class)*100,2))+' %'
-
-                record = [standard,teacher_name,class_name.name,attended_subject,percentage]
+            print("-->> Class index = ", class_name)
+            for subject_in_class in subjects_in_class:
+                print("------>> Subject index = ", subject_in_class)
+                current_subject_class_data = standard_data.filter(class_name=class_name,subject=subject_in_class)
+                students_in_subject_class = Student_Subject_Model.objects.filter(subject=subject_in_class,class_name=class_name.name,standard_name=class_name.uid)
+                total_students_in_subject_class = students_in_subject_class.count()
+                try:
+                    x = students_in_subject_class.first().student.name
+                    y = current_subject_class_data.filter(student_name=x).count()
+                    if y==0:y=1 
+                    present_students = round(current_subject_class_data.filter(~Q(attendance_status='Absent')).distinct().count()/y,2)
+                    absent_students = round(current_subject_class_data.filter(attendance_status='Absent').distinct().count()/y,2)
+                    percentage = round((present_students/total_students_in_subject_class)*100,2)
+                except:
+                    present_students = 'N/A'
+                    absent_students = 'N/A'
+                    percentage = 'N/A'
+                    total_students_in_subject_class = 'N/A'
+                if present_students==0:absent_students=total_students_in_subject_class
+                try:teacher_name = current_subject_class_data.first().teacher_name
+                except: teacher_name="No teacher marked attendance"
+                record = [
+                    standard.name,teacher_name,class_name.name,
+                    subject_in_class.name,present_students,absent_students,percentage,
+                    total_students_in_subject_class,total_students_in_class
+                ]
                 standard_df_container.append(record)
-
-        df = pd.DataFrame(data=standard_df_container,columns=headers)
+        df=pd.DataFrame(standard_df_container,columns=['Standard','Teacher','Class','Subject','Present','Absent','Percentage %','Total students in subjective-class', 'Overall students in class'])
+        print(df)
         main_df_container.append(df)
+
+                
+            
+
+    
+    writer = pd.ExcelWriter('attendace_report.xlsx', engine='xlsxwriter')
+    for index,df in enumerate(main_df_container):
+        df.to_excel(writer, sheet_name=str(standards[index]),index=False)
+    writer.save()
+
+
+
 
 
 
@@ -162,5 +215,7 @@ def weekly_report_generator():
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    # shutil.rmtree(reports_folder)
+    shutil.rmtree(reports_folder)
     return response
+
+

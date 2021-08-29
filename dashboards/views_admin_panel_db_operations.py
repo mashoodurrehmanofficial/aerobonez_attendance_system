@@ -19,7 +19,12 @@ from django.http import FileResponse
 try:from .report_generator import *
 except:from report_generator import *
 # Create your views here.
- 
+import dateparser,time
+from datetime import datetime
+from dateutil import parser
+
+
+
 def manage_standards(request): 
     standards = Standard.objects.all()
     return render(request, 'dashboards/manage_standards.html',{"standards":standards})
@@ -416,14 +421,35 @@ def manage_reports(request):
     return render(request, 'dashboards/manage_reports.html')
 
 
-def generate_absent_report(request): 
-    return absent_report_generator()
+def generate_absent_report(request,absent_report_date): 
+    absent_report_date = parser.parse(absent_report_date).date()
+    print(absent_report_date) 
+    return absent_report_generator(absent_report_date)
 
-def generate_attendance_report(request): 
-    return attendance_report_generator()
+def generate_attendance_report(request,daily_report_date): 
+    daily_report_date = parser.parse(daily_report_date).date()
+    return attendance_report_generator(daily_report_date)
 
-def generate_weekly_report(request): 
-    return weekly_report_generator()
+ 
+
+
+def generate_weekly_report(request,start_date,end_date): 
+    start_date = parser.parse(start_date).date()
+    end_date = parser.parse(end_date).date()
+    time_start_date = time.mktime(start_date.timetuple())
+    time_end_date = time.mktime(end_date.timetuple())
+    if time_end_date>time_start_date:
+        return weekly_report_generator(start_date,end_date)
+    else:
+        return HttpResponse("<h2>Please use valid Date Range")
+        
+
+     
+
+
+
+
+
 
 def download_db(request): 
     file_path = os.path.join(os.path.join(os.getcwd(),'db.sqlite3'))

@@ -98,7 +98,7 @@ def forgot_password(request):
             code = str(str(uuid.uuid4())+str(uuid.uuid4())).replace('-','')
             target_profile.reset_code = code
             target_profile.save() 
-            SEND_MESSAGE(email,f"http://localhost:8000/account/reset_password/{code}")
+            SEND_MESSAGE(email,f"http://54.255.3.66:8000//account/reset_password/{code}")
             return redirect("message_page")
         else:
             return render(request, 'accounts/forgot_password.html',{"error":"Given Email doesn't exists in database !"})
