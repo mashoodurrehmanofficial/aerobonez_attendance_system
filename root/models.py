@@ -95,18 +95,18 @@ class Standard(models.Model):
 
  
 class AttendanceReport(models.Model):
-    report_uid = models.CharField(max_length=100, default='',blank=True)
-    normal_date = models.CharField(max_length=100, default='',blank=True)
-    submit_time = models.CharField(max_length=100, default='',blank=True)
-    submit_date_field = models.DateField(blank=True,default='')
-    teacher_uid = models.CharField(max_length=100, default='',blank=True)
-    teacher_name = models.CharField(max_length=300, default='',blank=True)
     standard = models.CharField(max_length=300, default='',blank=True)
     class_name = models.CharField(max_length=300, default='',blank=True)
     subject = models.CharField(max_length=300, default='',blank=True)
-    student_secret_id = models.CharField(max_length=100, default='',blank=True)
+    teacher_name = models.CharField(max_length=300, default='',blank=True)
+    submit_date_field = models.DateField(blank=True,default='')
+    normal_date = models.CharField(max_length=100, default='',blank=True)
     student_name = models.CharField(max_length=300, default='',blank=True) 
+    teacher_uid = models.CharField(max_length=100, default='',blank=True)
+    student_secret_id = models.CharField(max_length=100, default='',blank=True)
     attendance_status = models.CharField(max_length=10, default='',blank=True)
+    report_uid = models.CharField(max_length=100, default='',blank=True)
+    submit_time = models.CharField(max_length=100, default='',blank=True)
     def __str__(self):
         return str(self.teacher_name)+'__'+str(self.standard)+'__'+str(self.class_name)+'__'+str(self.subject)
 
