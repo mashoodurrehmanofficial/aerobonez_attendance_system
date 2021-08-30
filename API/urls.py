@@ -14,3 +14,7 @@ urlpatterns = [
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# http://54.255.3.66:8000/api/get_attendance_data
+# http://54.255.3.66:8000/api/get_subject_list
+# http://54.255.3.66:8000/api/get_teacher_data
+# http://54.255.3.66:8000/api/get_class_list

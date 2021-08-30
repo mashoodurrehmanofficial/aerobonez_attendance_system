@@ -12,6 +12,24 @@
     margin: 0% !important;
     padding: 0% !important
   }
+
+  [type="radio"]:checked+span:after, [type="radio"].absent_with-gap:checked+span:after {
+    background-color:rgb(255, 0, 0);
+  }
+  [type="radio"]:checked+span:after, [type="radio"].absent_with-gap:checked+span:before, 
+  [type="radio"].with-gap:checked+span:after {
+    border: 2px solid rgb(255, 0, 0);
+  }
+
+
+  [type="radio"]:checked+span:after, [type="radio"].late_with-gap:checked+span:after {
+    background-color:rgb(75, 75, 75);
+  }
+  [type="radio"]:checked+span:after, [type="radio"].late_with-gap:checked+span:before, 
+  [type="radio"].with-gap:checked+span:after {
+    border: 2px solid rgb(75, 75, 75);
+  }
+
 </style>
 <br>
 
@@ -19,11 +37,21 @@
 
 <div style="margin:10px  10px" >
   <div class="row">
-    <div class="col s12 l6 m6">
-
+    <div class="col s12 l3 m3">
       <button id="mark_all_present" class="btn">Mark all Present</button>  <br><br>
     </div>
-    <div class="col s12 l6 m6">
+
+    <div class="col s12 l3 m3">
+      <button id="mark_all_late" class="btn grey darken-3">Mark all Late</button>  <br><br>
+    </div>
+
+    <div class="col s12 l3 m3">
+      <button id="mark_all_absent" class="btn red">Mark all Absent</button>  <br><br>
+    </div>
+
+
+
+    <div class="col s12 l3 m3">
       <input type="button" class="datepicker btn" value="Select date">
 
     </div>
@@ -56,8 +84,8 @@
                         </td>
                         <td style="text-align: center !important;">
                             <p>
-                                <label>
-                                  <input  data-code="L" class="with-gap {{student.1}}l" name="{{student.1}}" id="{{student.1}}l" type="radio"   />
+                                <label class="">
+                                  <input  data-code="L" class="late_with-gap with-gap {{student.1}}l" name="{{student.1}}" id="{{student.1}}l" type="radio"   />
                                   <span></span>
                                 </label>
                               </p>
@@ -65,7 +93,7 @@
                         <td style="text-align: center !important;">
                             <p>
                               <label>
-                                <input  data-code="A" class="with-gap {{student.1}}a" name="{{student.1}}" id="{{student.1}}a" type="radio"   />
+                                <input  data-code="A" class="absent_with-gap   with-gap {{student.1}}a" name="{{student.1}}" id="{{student.1}}a" type="radio"   />
                                 <span></span>
                               </label>
                             </p> 
@@ -92,6 +120,14 @@
 
 
 <script>
+
+
+
+
+
+
+
+
 
 $('.datepicker').change(function(e){
   var date = $('.datepicker').val()
@@ -140,15 +176,50 @@ $('form').submit(function(e){
 
 <script>
  
-$('#mark_all_present').click(function(){
+
+  $('#mark_all_present').click(function () {
+    $('.with-gap').attr('checked', false)
     var elems = $('.with-gap')
-            for(var i=0;i<elems.length;i++){
-                var code = elems[i].getAttribute("data-code")
-                if(code=='P'){
-                    $('input[data-code="P"]').attr('checked',true)
-                }
-            }
-}) 
+    for (var i = 0; i < elems.length; i++) {
+      var code = elems[i].getAttribute("data-code")
+      if (code == 'P') {
+        $('input[data-code="P"]').attr('checked', true)
+        $('input[data-code="L"]').attr('checked', false)
+        $('input[data-code="A"]').attr('checked', false)
+      }
+    }
+  })
+
+
+ 
+    $('#mark_all_late').click(function () { 
+       $('.with-gap').attr('checked', false)
+
+       var elems = $('.with-gap')
+       for (var i = 0; i < elems.length; i++) {
+         var code = elems[i].getAttribute("data-code")
+         if (code == 'L') {
+           $('input[data-code="L"]').attr('checked', true) 
+         }
+       }
+    })
+   
+
+
+    $('#mark_all_absent').click(function () { 
+       $('.with-gap').attr('checked', false)
+
+       var elems = $('.with-gap')
+       for (var i = 0; i < elems.length; i++) {
+         var code = elems[i].getAttribute("data-code")
+         if (code == 'A') {
+           $('input[data-code="A"]').attr('checked', true) 
+         }
+       }
+    })
+   
+
+
 
 </script>
 {% endblock 'engine' %}
