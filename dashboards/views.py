@@ -100,7 +100,7 @@ def submit_attendance_sheet(request):
 
 def view_attendance_directory(requset):
     teacher = TeacherProfile.objects.get(user=requset.user)
-    teacher_reports = AttendanceReport.objects.filter(teacher_uid=teacher.uid).distinct()
+    teacher_reports = AttendanceReport.objects.filter(teacher_uid=teacher.uid).distinct().order_by('submit_date_field')
     report_uids = list(set([x.report_uid for x in teacher_reports]))
     teacher_reports = [AttendanceReport.objects.filter(report_uid=x).first() for x in report_uids]
     return render(requset, "dashboards/view_attendance_directory.html",{'teacher':teacher,'teacher_reports':teacher_reports})
@@ -128,12 +128,21 @@ def load_attendance_sheet(request, report_uid):
                 target_record.normal_date       = incoming_date 
                 target_record.save()
 
+
     students = AttendanceReport.objects.filter(report_uid=report_uid)
+    target_report = AttendanceReport.objects.filter(report_uid=report_uid).first()
+    standard = target_report.standard
+    subject = target_report.subject
+    class_name = target_report.class_name
+
+
     normal_date = students.first().normal_date
     students = [[x.student_name,x.student_secret_id,x.attendance_status] for x in students] 
     teacher = TeacherProfile.objects.get(user=request.user)
     return render(request, "dashboards/update_attendance_sheet.html",{
-        'report_uid':report_uid,'students':students,'teacher':teacher,'normal_date':normal_date
+        'report_uid':report_uid,'students':students,'teacher':teacher,'normal_date':normal_date,
+        'standard':standard,
+            'class':class_name,'subject':subject
         })
 
 
