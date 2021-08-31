@@ -152,7 +152,7 @@ $('form').submit(function(e){
         list=[]
             var elems = $('.with-gap:checked')
             for(var i=0;i<elems.length;i++){
-                var class_names = elems[i].className.split(/\s+/)[1]
+                var class_names = elems[i].className.split(/\s+/)[2]
                 list.push(class_names)
             }
             $('#data').val(list)     

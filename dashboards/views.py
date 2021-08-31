@@ -41,9 +41,7 @@ def mark_attendance(request):
         students = Student_Subject_Model.objects.filter(
             subject__name=incoming_subject,standard_name=incoming_standard,class_name=incoming_class).order_by('student__name')
         
-        students = [[x.student.name,x.student.uid] for x in students]
-        # students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
-        # students = [[x.name,x.uid,index+1] for index,x in enumerate(students)]
+        students = [[x.student.name,x.student.uid] for x in students] 
         ids = [int(x[-1]) for x in students]
         return render(request, 'dashboards/attendance_sheet.html',{
             'students':students,'ids':ids,'teacher':incoming_teacher,'standard':incoming_standard,
@@ -64,6 +62,7 @@ def submit_attendance_sheet(request):
         date_object = parser.parse(str(incoming_date)).date()
         
         data = [[(x[:-1]),x[-1]] for x in data]
+        print(data)
         data_set=[]
         all_students = Student.objects.filter(uid__in=[x[0] for x in data])
         teacher_uid = TeacherProfile.objects.get(user=request.user).uid
