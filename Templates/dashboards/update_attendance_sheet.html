@@ -102,9 +102,9 @@
             <p>
               <label>
                 {% if student.2 == 'Present' %}
-                <input data-code="P" class="with-gap {{student.1}}p" name="{{student.1}}" id="{{student.1}}p"  type="radio"  checked/>
+                <input data-code="P" class="present_with-gap with-gap {{student.1}}p" name="{{student.1}}" id="{{student.1}}p"  type="radio"  checked/>
                 {% else %}
-                <input data-code="P" class="with-gap {{student.1}}p" name="{{student.1}}" id="{{student.1}}p"  type="radio"  />
+                <input data-code="P" class="present_with-gap with-gap {{student.1}}p" name="{{student.1}}" id="{{student.1}}p"  type="radio"  />
                 
                 {% endif %}
                 <span></span>
@@ -144,33 +144,11 @@
               </label>
             </p>
           </td>
-
-
-
-
-
-
-
-
-
-
-
         </tr>
         {% endfor %}
-
-
-
-
-
-
-
-
-
       </tbody>
     </table>
     <br>
-
-
     <input type="text" name="report_uid" id="{{report_uid}}" value="{{report_uid}}" style="width:1px ; height:1px !important">
     <input type="text" name="data" id="data" style="width:1px ; height:1px !important">
     <input type="text"  id="date"  name="date" style="width:1px ; height:1px !important" value="{{normal_date}}">
@@ -213,7 +191,8 @@
           var class_names = elems[i].className.split(/\s+/)[2]
           list.push(class_names)
         }
-        $('#data').val(list) 
+        $('#data').val(list)  
+        
       }
       else {
         e.preventDefault()
