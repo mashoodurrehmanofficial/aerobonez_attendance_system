@@ -165,9 +165,9 @@ def pdf_attendance_sheet(request, report_uid):
     file_name = standard+'_'+subject+'_'+class_name+'_'
 
 
-    file_name =file_name+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.csv'
+    file_name =file_name+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.xlsx'
     file = os.path.join(reports_folder,file_name)
-    df.to_csv(file,index=False) 
+    df.to_excel(file,index=False) 
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
