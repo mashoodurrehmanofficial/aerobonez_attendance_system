@@ -153,26 +153,25 @@ def pdf_attendance_sheet(request, report_uid):
     header = ['Standard','Class','Subject','Student Name','Status']
     data_set = [[x.standard,x.class_name,x.subject,x.student_name,x.attendance_status] for x in target_report]
     df = pd.DataFrame(data_set,columns=header)
-
-
     reports_folder = os.path.join(os.getcwd(),'Reports')
     if not os.path.exists(reports_folder):os.makedirs(reports_folder)
-
     standard = str(target_report.first().standard)
     subject = str(target_report.first().subject)
     class_name = str(target_report.first().class_name)
-
     file_name = standard+'_'+subject+'_'+class_name+'_'
-
-
     file_name =file_name+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.xlsx'
     file = os.path.join(reports_folder,file_name)
     df.to_excel(file,index=False) 
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    
     return response
+ 
+  
+def delete_attendance_sheet(request, report_uid):
+    target_report = AttendanceReport.objects.filter(report_uid=report_uid)
+    target_report.delete()
+    return redirect('view_attendance_directory') 
  
   
  

@@ -17,6 +17,7 @@ urlpatterns = [
 
             path('/teacherpanel/load_attendance_sheet/<str:report_uid>', load_attendance_sheet, name='load_attendance_sheet'),  
             path('/teacherpanel/pdf_attendance_sheet/<str:report_uid>', pdf_attendance_sheet, name='pdf_attendance_sheet'),  
+            path('/teacherpanel/delete_attendance_sheet/<str:report_uid>', delete_attendance_sheet, name='delete_attendance_sheet'),  
 
 
 

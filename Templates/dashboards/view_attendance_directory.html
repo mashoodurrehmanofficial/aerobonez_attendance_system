@@ -10,7 +10,7 @@
       }
 
       tbody tr:nth-child(even) {
-        background: rgb(230, 230, 230)
+        background: rgb(245, 245, 245)
       }
 
 </style>
@@ -31,6 +31,7 @@
               <th>Attendance Time</th>
               <th>Edit</th>
               <th>Download</th>
+              <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +52,7 @@
 
                     <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
                     <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">download</i></a></td>            
+                    <td><a  href="/dashboard/teacherpanel/delete_attendance_sheet/{{report.report_uid}}" ><i class="material-icons red-text">delete</i></a></td>            
                 </tr> 
             {% endfor %}  
         </tbody>
