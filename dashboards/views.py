@@ -12,7 +12,9 @@ from django.conf import settings
 import os,pandas as pd,uuid
 from datetime import datetime
 from dateutil import parser
-
+from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse,HttpResponse
+from wsgiref.util import FileWrapper
 
 report_folder = os.path.join(os.getcwd(),'Attendance Report') 
 def checkfolder():
@@ -146,8 +148,34 @@ def load_attendance_sheet(request, report_uid):
         })
 
 
+def pdf_attendance_sheet(request, report_uid):
+    target_report = AttendanceReport.objects.filter(report_uid=report_uid).order_by('student_name')
+    header = ['Standard','Class','Subject','Student Name','Status']
+    data_set = [[x.standard,x.class_name,x.subject,x.student_name,x.attendance_status] for x in target_report]
+    df = pd.DataFrame(data_set,columns=header)
 
 
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+
+    standard = str(target_report.first().standard)
+    subject = str(target_report.first().subject)
+    class_name = str(target_report.first().class_name)
+
+    file_name = standard+'_'+subject+'_'+class_name+'_'
+
+
+    file_name =file_name+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.csv'
+    file = os.path.join(reports_folder,file_name)
+    df.to_csv(file,index=False) 
+    wrapper = FileWrapper(open(file, 'rb'))
+    response = HttpResponse(wrapper, content_type='application/force-download')
+    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+    
+    return response
+ 
+  
+ 
 
 
     

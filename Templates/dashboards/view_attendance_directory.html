@@ -10,7 +10,7 @@
       }
 
       tbody tr:nth-child(even) {
-        background: rgb(184, 184, 184)
+        background: rgb(230, 230, 230)
       }
 
 </style>
@@ -30,6 +30,7 @@
               <th>Subject</th>
               <th>Attendance Time</th>
               <th>Edit</th>
+              <th>Download</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +50,7 @@
                     
 
                     <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
+                    <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">download</i></a></td>            
                 </tr> 
             {% endfor %}  
         </tbody>
