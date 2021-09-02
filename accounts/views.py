@@ -24,7 +24,7 @@ def signup_page(request):
         user = User.objects.filter(email=email)
         try:
             if user.exists():
-                return render(request, 'accounts/signup.html',{"teachers":teachers,"error":"Email already exists !"})
+                return render(request, 'accounts/signup.html',{"page_title":"Sign Up","teachers":teachers,"error":"Email already exists !"})
             else:
                 user = User(username=usernmae,email=email,password=make_password(password))
                 user.save()
@@ -34,12 +34,12 @@ def signup_page(request):
                 teacher.save()
                 teacher_profile = TeacherProfile(name=usernmae,user=user,uid=uid,email=email,password=password)
                 teacher_profile.save()
-                return render(request, 'accounts/login.html',{"teachers":teachers,'message':"Account created successfully !"})
+                return render(request, 'accounts/login.html',{"page_title":"Sign Up","teachers":teachers,'message':"Account created successfully !"})
         except IntegrityError:
-                return render(request, 'accounts/signup.html',{"teachers":teachers,"error":"Teacher name has already been selected !"})
+                return render(request, 'accounts/signup.html',{"page_title":"Sign Up","teachers":teachers,"error":"Teacher name has already been selected !"})
 
 
-    return render(request, 'accounts/signup.html',{"teachers":teachers})
+    return render(request, 'accounts/signup.html',{"page_title":"Sign Up","teachers":teachers})
 
 
 
@@ -64,11 +64,11 @@ def login_page(request):
                 else:
                     return redirect('teacherpanel')
             else:
-                return render(request, 'accounts/login.html',{"error":"Sorry, email or password is incorrect !"})
+                return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, email or password is incorrect !"})
         else:
             print("dont exists")
-            return render(request, 'accounts/login.html',{"error":"Sorry, email or password is incorrect !"})
-    return render(request, 'accounts/login.html')
+            return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, email or password is incorrect !"})
+    return render(request, 'accounts/login.html',{"page_title":"Login"})
 
 
 

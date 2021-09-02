@@ -89,7 +89,7 @@ def index(request):
     
 
     else:
-        return render(request, 'root/index.html',{'teachers':teachers})
+        return render(request, 'root/index.html',{"page_title":'e-Hadir SMKBM','teachers':teachers})
     
 
 

@@ -23,6 +23,25 @@
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
+  
+{% if page_title == 'Login' or page_title == 'Sign Up' or page_title == 'e-Hadir SMKBM' %}
+  <style>
+    footer {
+      padding-left: 0px !important;
+    } 
+  </style>
+
+  {% else %}
+
+{% endif %}
+
+ 
+
+
+
+
+
+
 
   <style>
     html{
@@ -46,15 +65,14 @@
 
 
     header,
-    main {
+    main,footer {
       padding-left: 250px;
     }
 
     @media only screen and (max-width : 992px) {
 
       header,
-      main,
-      footer {
+      main {
         padding-left: 0;
       }
     }
@@ -67,14 +85,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body id="body" style="height: 100%;">
+<body >
   {% include 'partials/root/navbar.html' %}
-
+  
   {% block 'mainbody' %}
-
-
+  
+  
   {% endblock 'mainbody' %}
-
+  
+  {% include 'partials/root/footer.html' %}
 
 
   <!-- Dropdown Trigger -->
@@ -85,14 +104,7 @@
 
 
 
-  <br><br>
 
-
-  <div class="green white-text" style="display: flex;flex-direction: column;align-items:center">
-    <center>
-      <h4><b>Powered by avaeloncloud ™</b></h4> <br>
-    </center>
-  </div>
 
 
 
