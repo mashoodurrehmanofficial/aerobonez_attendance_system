@@ -1,157 +1,159 @@
-{% load static  %}
+{% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
-  
-<link rel="stylesheet" href="{{ STATIC_URL }}/Static/css/materialize.css">  
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  -->
-    <script src="{{ STATIC_URL }}/Static/javascript/materialize.js"></script> 
-    <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
-{% if page_title %}
-  <title>{{page_title}}</title>  
-{% else %}
+
+  <link rel="stylesheet" href="{{ STATIC_URL }}/Static/css/materialize.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  -->
+  <script src="{{ STATIC_URL }}/Static/javascript/materialize.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
+  {% if page_title %}
+  <title>{{page_title}}</title>
+  {% else %}
   <title>e-Hadir SMKBM</title>
   {% endif %}
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
-<link rel="shortcut icon" href="{{ STATIC_URL }}/Static/images/favicon.png" type="image/x-icon">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600&display=swap" rel="stylesheet">
-<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
-  
+  <link rel="shortcut icon" href="{{ STATIC_URL }}/Static/images/favicon.png" type="image/x-icon">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400;1,600&display=swap"
+    rel="stylesheet">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 
 
   <style>
-
     body {
       font-family: 'Nunito', sans-serif;
-      text-align: justify; 
+      text-align: justify;
     }
- 
-
- 
 
 
 
-html, body{
-  height: 100% !important;
-}
 
 
-header, main {
-  padding-left: 250px;
-}
 
-@media only screen and (max-width : 992px) {
-  header, main, footer {
-    padding-left: 0;
-  }
-}
-     
-ul.collection li {
-  padding: 0% !important;
-  margin: 0% !important
-}
+    html,
+    body {
+      height: 100% !important;
+    }
 
-    </style>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+
+    header,
+    main {
+      padding-left: 250px;
+    }
+
+    @media only screen and (max-width : 992px) {
+
+      header,
+      main,
+      footer {
+        padding-left: 0;
+      }
+    }
+
+    ul.collection li {
+      padding: 0% !important;
+      margin: 0% !important
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body id="body" style="height: 100%;">      
-{% include 'partials/root/navbar.html' %}
- 
-{% block 'mainbody' %}
 
- 
-{% endblock 'mainbody' %}
-          
-          
+<body id="body" style="height: 100%;">
+  {% include 'partials/root/navbar.html' %}
+
+  {% block 'mainbody' %}
+
+
+  {% endblock 'mainbody' %}
+
+
 
   <!-- Dropdown Trigger -->
- 
-           
-
-
-
-
-
-<br><br>
-
-  <footer class="page-footer green" >
-    <div class="container">
-      <center>
-        <h4><b>Powered by avaeloncloud</b></h4> <br>
-      </center>
-    </div>
-    <!-- <div class="footer-copyright" >
-      <div>
-      <center>© 2021 Copyright </center>
-      <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-      </div>
-    </div> -->
-  </footer>
 
 
 
 
 
 
-<script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>  
-<script src="{{ STATIC_URL }}/Static/javascript/responsive.js"></script>   
-{% block 'js' %}
-{% endblock 'js' %}
-<script>
- 
 
-document.addEventListener('DOMContentLoaded', function() {
-  var collapsibleElem = document.querySelector('.collapsible');
-  var collapsibleInstance = M.Collapsible.init(collapsibleElem, {Collapsible:true});
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems, {
-      'Dropdown': true,
-      'coverTrigger':false
+  <br><br>
+
+
+  <div class="green white-text" style="display: flex;flex-direction: column;align-items:center">
+    <center>
+      <h4><b>Powered by avaeloncloud</b></h4> <br>
+    </center>
+  </div>
+
+
+
+
+
+
+
+  <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/responsive.js"></script>
+  {% block 'js' %}
+  {% endblock 'js' %}
+  <script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var collapsibleElem = document.querySelector('.collapsible');
+      var collapsibleInstance = M.Collapsible.init(collapsibleElem, { Collapsible: true });
+      var elems = document.querySelectorAll('.dropdown-trigger');
+      var instances = M.Dropdown.init(elems, {
+        'Dropdown': true,
+        'coverTrigger': false
+      });
     });
-  });
- 
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems, {
-      Collapsible:true
-    });
-  });
 
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, {
-      Sidenav:true
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.collapsible');
+      var instances = M.Collapsible.init(elems, {
+        Collapsible: true
+      });
     });
-  });
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, {
-      Sidenav:true
-    });
-  });
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, {
-      "FormSelect":true
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems, {
+        Sidenav: true
+      });
     });
-  });
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems, {
-      Modal:true
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.sidenav');
+      var instances = M.Sidenav.init(elems, {
+        Sidenav: true
+      });
     });
-  });
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems, {
-      Datepicker:true
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, {
+        "FormSelect": true
+      });
     });
-  });
-</script>
-   </body>
- </html>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elems, {
+        Modal: true
+      });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('.datepicker');
+      var instances = M.Datepicker.init(elems, {
+        Datepicker: true
+      });
+    });
+  </script>
+</body>
+
+</html>
