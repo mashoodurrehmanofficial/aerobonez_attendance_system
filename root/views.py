@@ -65,16 +65,15 @@ def download(request, filename):
 
 # Create your views here.
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
     teachers = Teacher.objects.all()
     if request.method=='POST':
         print(request.POST)
         incoming_teacher = request.POST['teacher']
         incoming_standard = request.POST['standard']
         incoming_class = request.POST['class']
-        incoming_subject = request.POST['subject']  
-
-        # target_class = ClassList.objects.filter(standard__name= Standard.objects.get(name=incoming_standard)).filter(name=incoming_class).first()
-        # students = Student.objects.filter(classlist__name=target_class).order_by('name')
+        incoming_subject = request.POST['subject']   
         students = Student.objects.filter(classlist__name=incoming_class,classlist__uid=incoming_standard).order_by('name')
         
         
