@@ -58,12 +58,10 @@ def absent_report_generator(absent_report_date):
     file_name = 'Absent report data '+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.csv'
     file = os.path.join(reports_folder,file_name)
     df.to_csv(file,index=False) 
-
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
     shutil.rmtree(reports_folder)
-    
     return response
 
 

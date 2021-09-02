@@ -21,7 +21,10 @@
 
 <div class="container">
     <form action="/account/signup" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
-        <center><h3><b>Signup Form</b></h3></center>
+        <center>
+          <img width="80vw" ; height="80vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
+          <h3><b>Signup Form</b></h3>
+        </center>
 
         <div class="select_teacher">
           <label>Select Name</label>
