@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}/Static/css/materialize.css">
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  -->
   <script src="{{ STATIC_URL }}/Static/javascript/materialize.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/tableSortable.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/tableSortable.min.js"></script>
   <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
   {% if page_title %}
   <title>{{page_title}}</title>
@@ -100,22 +102,43 @@
 
 
 
+  <!-- <div class="fixed-action-btn color_mode">
+    <a class="btn-floating btn-large grey darken-4 ">
+      <i class="large material-icons ">brightness_4</i>
+    </a> 
+  </div>
 
 
 
+<script>
+$('.color_mode').click(function(){
+  var targets = ['main','footer','ul','li','main','nav','body']
+  $(this).addClass("white")
+  for(var x=0;x<targets.length;x++){
+    $(targets[x]).addClass("grey")
+    
+  }
+})
+</script> -->
 
 
-
-
-
+ 
 
 
 
   <script src="{{ STATIC_URL }}/Static/javascript/jquery.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/tableSortable.js"></script>
+  <script src="{{ STATIC_URL }}/Static/javascript/tableSortable.min.js"></script>
   <script src="{{ STATIC_URL }}/Static/javascript/responsive.js"></script>
   {% block 'js' %}
   {% endblock 'js' %}
   <script>
+
+
+
+
+
+
 
 
     document.addEventListener('DOMContentLoaded', function () {
