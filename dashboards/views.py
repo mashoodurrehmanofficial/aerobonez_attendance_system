@@ -102,12 +102,8 @@ def submit_attendance_sheet(request):
 
 def view_attendance_directory(requset):
     teacher = TeacherProfile.objects.get(user=requset.user)
-    teacher_reports = AttendanceReport.objects.filter(teacher_uid=teacher.uid).distinct().order_by('-submit_date_field')
-    report_uids = list(dict.fromkeys([x.report_uid for x in teacher_reports]))
-
-
-
-    
+    teacher_reports = AttendanceReport.objects.filter(teacher_uid=teacher.uid).distinct().order_by('submit_date_field')
+    report_uids = list(set([x.report_uid for x in teacher_reports]))
     teacher_reports = [AttendanceReport.objects.filter(report_uid=x).first() for x in report_uids]
     return render(requset, "dashboards/view_attendance_directory.html",{'teacher':teacher,'teacher_reports':teacher_reports})
 

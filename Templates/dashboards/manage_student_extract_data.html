@@ -12,25 +12,25 @@
 
 
   <center>
-    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Student Data</b></h4> <br>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Data Pelajar</b></h4> <br>
   </center> 
  <form action="" class="z-depth-2 " style="border-radius: 20px;padding:20px">
   <div class="input-field ">
     <input id="name" name="name" type="text" class="validate" value="{{student.name}}" readonly>
-    <label for="name">Student Name</label>
+    <label for="name">Nama Pelajar</label>
   </div>
   <div class="input-field ">
     <input id="uid" name="uid" type="text" class="validate" value="{{student.uid}}" readonly>
-    <label for="uid">Unique ID</label>
+    <label for="uid">ID Pelajar</label>
   </div> 
  </form>
 
 
   <br>
   <center>
-    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b>Enrolled classes</b></h4> <br>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b>Kelas</b></h4> <br>
   </center> 
-  <a href="/dashboard/views_admin_panel_db_operations/manage_classes/"><button class="z-depth-2 blue accent-3 btn modal-trigger btn right">Add Class <i class="material-icons right">add</i> </button></a>
+  <a href="/dashboard/views_admin_panel_db_operations/manage_classes/"><button class="z-depth-2 blue accent-3 btn modal-trigger btn right">Tambah Kelas<i class="material-icons right">add</i> </button></a>
 
 
  <div>
@@ -38,10 +38,10 @@
   <table class="striped">
     <thead>
       <tr>
-        <th>Index</th>
-        <th>Standard</th>
-        <th>Class Name</th>
-        <th>Remove from Class</th>
+        <th>Bil.</th>
+        <th>Tingkatan</th>
+        <th>Nama Kelas</th>
+        <th>Tindakan</th>
       </tr>
     </thead>
 
@@ -73,11 +73,11 @@
   <!-- Modal Structure -->
   <div id="attach_subject_modal" class="modal">
     <div class="modal-content"> 
-      <h4><b>Attach another Subject</b></h4>
+      <h4><b>Tambah Mata Pelajaran</b></h4>
       <form action="" id="attach_subject_form">
         
         <div class="select_other_students">
-          <label>Select Subject</label>
+          <label>Pilih Mata Pelajaran</label>
           <select name='class' class="browser-default"  id="select_other_subjects">
 
             <option value="" disabled selected>Select another Subject</option>
@@ -98,9 +98,9 @@
 
   <br>
   <center>
-    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Enrolled Subjects</b></h4> <br>
+    <h4  class="z-depth-2 blue accent-3 white-text" style="padding:10px;border-radius: 10px;"><b >Mata Pelajaran</b></h4> <br>
   </center> 
-  <button  id="attach_subject_modal_button" data-target="attach_subject_modal" class="z-depth-2 blue accent-3 btn modal-trigger btn right">Attach subject to Student <i class="material-icons right">link</i> </button>
+  <button  id="attach_subject_modal_button" data-target="attach_subject_modal" class="z-depth-2 blue accent-3 btn modal-trigger btn right">Tambah Mata Pelajaran <i class="material-icons right">link</i> </button>
 
 
  <div>
@@ -108,9 +108,9 @@
   <table class="striped">
     <thead>
       <tr>
-        <th>Index</th> 
-        <th>Subject</th>
-        <th>Remove Subject</th>
+        <th>Bil.</th> 
+        <th>Mata Pelajaran</th>
+        <th>Tindakan</th>
       </tr>
     </thead>
 

@@ -2,12 +2,19 @@
 {% extends 'partials/dashboards/teacher_engine.html' %}
 {% block 'engine'%}
  
+
   
 <center>
-    <h3>Teacher Panel</h3>
+    <br>
+    <br>
+    <img width="160vw" ; height="160vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
+    <h3>Dewan Guru</h3>
 
 
-    <h3 style="font-size:140%">Teacher name:  {{teacher}}</h3>
+    <h3 style="font-size:140%">{{teacher}}</h3>
+    <h3 style="font-size:140%" id="datetime"></h3>
+    <body onload="startTime()">      
+    <h3 style="font-size:140%" id="txt"></h3>
 
 
 </center>
@@ -15,7 +22,27 @@
 
 
 
+<span id="datetime"></span></p>
 
+<script>
+        var dt = new Date();
+        document.getElementById("datetime").innerHTML = (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear());
+        function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+  setTimeout(startTime, 1000);
+}
+
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+</script>
 
 
 
@@ -24,10 +51,5 @@
 
 
 {% block 'js' %}
-
-
-
-
-
 {% endblock 'js' %}    
 {% endblock 'engine' %}

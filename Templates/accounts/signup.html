@@ -23,13 +23,13 @@
     <form action="/account/signup" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
         <center>
           <img width="80vw" ; height="80vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
-          <h3><b>Signup Form</b></h3>
+          <h3><b>Daftar Baru</b></h3>
         </center>
 
         <div class="select_teacher">
-          <label>Select Name</label>
+          <label>Nama</label>
           <select name='usernmae' class="browser-default"  id="select_teacher">
-            <option value="" disabled selected>Select Name</option>
+            <option value="" disabled selected>Pilih nama</option>
             {% for name  in teachers %}
               <option value="{{name}}">{{name}}</option>
             {% endfor %}
@@ -38,20 +38,20 @@
 
         <div class="input-field ">
             <input id="email" name="email" type="email" class="validate">
-            <label for="email">Email</label>
+            <label for="email">Emel</label>
           </div>
 
           <div class="input-field ">
             <input id="password" name="password" type="text" class="validate">
-            <label for="password">Password</label>
+            <label for="password">Kata Laluan</label>
           </div>
  
      
         
 
-        <a href="/account/login"> <u>Already have an account</u> </a>
+        <a href="/account/login"> <u>Sudah mempunyai akaun</u> </a>
 
-        <button class="btn right" style="width: 30%;">Sign Up</button>
+        <button class="btn right" style="width: 30%;">Daftar</button>
  <br>
  <br>
 

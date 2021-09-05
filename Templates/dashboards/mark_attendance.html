@@ -3,15 +3,20 @@
  
   
 
-
 <br>
+    <br>
+    <center>
+    <img width="160vw" ; height="160vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
+</center>    
+    <br>
+    <br>
 <div class="container">
     <form action="/dashboard/mark_attendance" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
 
         <div class="select_standard" >
-            <label>Select Standard</label>
+            <label>Tingkatan</label>
             <select name='standard' class="browser-default"  id="select_standard">
-                <option value="" disabled selected>Select Standard</option>
+                <option value="" disabled selected>Pilih Tingkatan</option>
                 {% for standard  in standards %}
                 <option value="{{standard}}">{{standard}}</option>
               {% endfor %}
@@ -19,13 +24,13 @@
             <br>
         </div>
         <div class="select_class" style="display: none">
-            <label>Select Class</label>
+            <label>Pilih Kelas</label>
             <select name='class' class="browser-default"  id="select_class">
             </select>
             <br>
         </div>
         <div class="select_subject" style="display: none">
-            <label>Select Subject</label>
+            <label>Pilih Mata Pelajaran</label>
             <select name='subject' class="browser-default"  id="select_subject">
             </select>
             <br>
@@ -33,7 +38,7 @@
 
         <input type="text"  name="teacher" value="{{request.user}}" style="height:1px;width:1px">
 
-        <button class="btn nextbtn" style="width: 100%;display:none">Next</button>
+        <button class="btn nextbtn" style="width: 100%;display:none">Teruskan</button>
     </form>
 </div> 
 
@@ -73,7 +78,7 @@ $('#select_class').change(function(e){
             var subjects = data.subjects  
             $('div.select_subject').show();
             $('select#select_subject').html('') 
-            $('select#select_subject').append(`<option value="" disabled selected>Select Subject</option> `)
+            $('select#select_subject').append(`<option value="" disabled selected>Pilih Mata Pelajaran</option> `)
             for(var x=0;x<subjects.length;x++){
                 $('select#select_subject').append(`
                 <option value="${subjects[x]}">${subjects[x]}</option> 
@@ -97,7 +102,7 @@ $('#select_standard').change(function(e){
             var classes = data.classes
             $('div.select_class').show();
             $('select#select_class').html('') 
-            $('select#select_class').append(`<option value="" disabled selected>Select Class</option> `)
+            $('select#select_class').append(`<option value="" disabled selected>Pilih Kelas</option> `)
             for(var x=0;x<classes.length;x++){
                 $('select#select_class').append(`
                 <option value="${classes[x]}">${classes[x]}</option> 
@@ -121,7 +126,7 @@ $('#select_teacher').change(function(e){
             var standards = data.standards
             $('div.select_standard').show();
             $('select#select_standard').html('') 
-            $('select#select_standard').append(`<option value="" disabled selected>Select Standard</option> `)
+            $('select#select_standard').append(`<option value="" disabled selected>Pilih Tingkatan</option> `)
             for(var x=0;x<standards.length;x++){
                 $('select#select_standard').append(`
                 <option value="${standards[x]}">${standards[x]}</option> 

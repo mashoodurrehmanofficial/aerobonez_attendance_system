@@ -1,36 +1,24 @@
 {% extends 'partials/dashboards/teacher_engine.html' %}
 {% block 'engine'%}
+<br>
+    <br>
+    <center>
+    <img width="160vw" ; height="160vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
+</center>    
+    <br>
+    <br>
 <style> 
       tbody td{padding: 8px !important;} 
+  
+  
       tbody tr p {
         margin: 0% !important;
         padding: 0% !important
       }
+
       tbody tr:nth-child(even) {
         background: rgb(245, 245, 245)
       }
-
-      table thead th {
-        cursor: pointer;
-      }
-  
-      table thead th.nosort {
-        cursor: initial;
-      }
-  
-      .table_sortable thead th:after {
-          display: inline-block;
-          padding: 0 .25rem;
-      }
-  
-      .table_sortable thead th.desc:after {
-          content: '↑';
-      }
-  
-      .table_sortable thead th.asc:after {
-          content: '↓';
-      }
-
 
 </style>
 
@@ -41,16 +29,16 @@
 
     
 
-    <table class="" id="myTable">
+    <table class="">
         <thead>
           <tr>
-              <th onclick="sortTable(0)">Standard</th>
-              <th onclick="sortTable(1)">Class</th>
-              <th onclick="sortTable(2)">Subject</th>
-              <th onclick="sortTable(3)">Attendance Time</th>
-              <th onclick="sortTable(4)">Edit</th>
-              <th onclick="sortTable(5)">Download</th>
-              <th onclick="sortTable(6)">Delete</th>
+              <th>Tingkatan</th>
+              <th>Kelas</th>
+              <th>Mata Pelajaran</th>
+              <th>Masa Kedatangan</th>
+              <th>Edit</th>
+              <th>Muat Turun</th>
+              <th>Padam</th>
           </tr>
         </thead>
         <tbody>
@@ -70,7 +58,7 @@
                     
 
                     <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
-                    <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">download</i></a></td>            
+                    <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">cloud_download</i></a></td>            
                     <td><a  href="/dashboard/teacherpanel/delete_attendance_sheet/{{report.report_uid}}" ><i class="material-icons red-text">delete</i></a></td>            
                 </tr> 
             {% endfor %}  
@@ -79,64 +67,8 @@
 
 </div>
 
-
 <script>
-  function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("myTable");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc"; 
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-      //start by saying: no switching is done:
-      switching = false;
-      rows = table.rows;
-      /*Loop through all table rows (except the
-      first, which contains table headers):*/
-      for (i = 1; i < (rows.length - 1); i++) {
-        //start by saying there should be no switching:
-        shouldSwitch = false;
-        /*Get the two elements you want to compare,
-        one from current row and one from the next:*/
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        /*check if the two rows should switch place,
-        based on the direction, asc or desc:*/
-        if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch= true;
-            break;
-          }
-        } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        /*If a switch has been marked, make the switch
-        and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        //Each time a switch is done, increase this count by 1:
-        switchcount ++;      
-      } else {
-        /*If no switching has been done AND the direction is "asc",
-        set the direction to "desc" and run the while loop again.*/
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
-          switching = true;
-        }
-      }
-    }
-  }
-  </script>
-  
+</script>
 {% endblock 'engine' %}
 {% block 'js' %}
 {% endblock 'js' %}

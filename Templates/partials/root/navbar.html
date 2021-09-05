@@ -15,17 +15,17 @@
               {% if user.is_superuser %}
               <li><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Dashboard</a></li>
               {% else %}
-              <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
+              <li><a href="/dashboard/teacherpanel">Dewan Guru</a></li>
               {% endif %}
 
-              <li><a href="/account/logout">Logout</a></li>
+              <li><a href="/account/logout">Log Keluar</a></li>
               
 
             {% else %}
               
             
-            <li><a href="/account/signup">Signup</a></li>
-            <li><a href="/account/login">Login</a></li>
+            <li><a href="/account/signup">Daftar</a></li>
+            <li><a href="/account/login">Log masuk</a></li>
             
             {% endif %}
            </ul>
@@ -38,14 +38,13 @@
   {% if user.is_authenticated %}
 
   {% if user.is_superuser %}
-  
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Manage Standards</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_classes/">Manage Classes</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_students/">Manage Students</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_subjects/">Manage Subjects</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers">Manage Teachers</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers/allow_teachers">Allow Teachers</a></li>
-  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_reports">Generate Reports</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers"><i class="material-icons  red-text">people</i>Guru</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_standards/"><i class="material-icons  red-text">dehaze</i>Tingkatan</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_classes/"><i class="material-icons  red-text"> border_all</i>Kelas</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_subjects/"><i class="material-icons  red-text">import_contacts</i>Mata Pelajaran</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_students/"><i class="material-icons  red-text"> wc</i>Pelajar</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_teachers/allow_teachers"><i class="material-icons  red-text">done</i>Akses Guru</a></li>
+  <li class="collection-item"><a href="/dashboard/views_admin_panel_db_operations/manage_reports"><i class="material-icons  red-text"> equalizer</i>Laporan</a></li>
  
 
 
@@ -53,44 +52,26 @@
 
 
   {% else %}
-  <li><a href="/dashboard/teacherpanel">Dashboard</a></li>
-  <li class=""><a href="/dashboard/mark_attendance">Mark Attendance</a></li>
-      <li class=""><a href="/dashboard/view_attendance_directory">Attendance Directory</a></li>
+  <li><a href="/dashboard/teacherpanel">Dewan Guru</a></li>
+  <li class=""><a href="/dashboard/mark_attendance"><i class="material-icons  red-text">done</i>Tanda Kehadiran</a></li>
+  <li class=""><a href="/dashboard/view_attendance_directory"><i class="material-icons  red-text">content_paste</i>Uruskan Kehadiran</a></li>
   {% endif %}
 
-  <li><a href="/account/logout">Logout</a></li>
+  <li><a href="/account/logout"><i class="material-icons  red-text">exit_to_app</i>Log Keluar</a></li>
   
 
 {% else %}
   
 
-<li><a href="/account/signup">Signup</a></li>
-<li><a href="/account/login">Login</a></li>
-
+<li><a href="/account/signup">Daftar Baru</a></li>
+<li><a href="/account/login">Log masuk</a></li>
+<li><a href="https://smkbukitmewah.com">Home</a></li>
 {% endif %}
   <!-- <li><a href="sass.html">Sass</a></li>
   <li><a href="badges.html">Components</a></li>
   <li><a href="collapsible.html">Javascript</a></li>
   <li><a href="mobile.html">Mobile</a></li> -->
 </ul>
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
 
 {% endblock 'mainbody' %}
 
