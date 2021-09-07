@@ -15,6 +15,22 @@
   </center>
 
 
+  <nav>
+    <div class="nav-wrapper teal">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav>
+  <br>
+
+
+
+
 
    <!-- Modal Structure -->
    <div id="add_student_modal" class="modal">
@@ -54,15 +70,15 @@
       </tr>
     </thead>
 
-    <tbody>
-      <tr>
+    <tbody >
       {% for student in students %}
+      <tr id="{{student.id}}" class="student_tr">
       <td>{{ forloop.counter }}</td>
       <td> <a  target="_blank" href="/dashboard/views_admin_panel_db_operations/manage_students_extract_data/{{student.id}}">   {{student.name}}</a> </td>
       <td> <a href="/dashboard/views_admin_panel_db_operations/manage_students_delete/{{student.id}}"><i class="material-icons  red-text"> delete</i></a>  </td>
 
-        </tr>
-        {% endfor %}
+      {% endfor %}
+    </tr>
 
 
     </tbody>
@@ -73,6 +89,40 @@
  
 
 <script>
+function Updater(query){
+  $.ajax({
+    url: "/dashboard/views_admin_panel_db_operations/manage_students_filter_by_name", 
+    data: {"query":query},
+    success: function(data){
+      var students = data.students 
+      var student_tr = $('tr.student_tr')
+      student_tr.hide()
+      for(var i=0;i<students.length;i++){
+        $(`tr#${students[i].id}`).show()
+      } 
+    }
+  }); 
+}
+
+
+  $("#search").keyup(function(e){
+    var query = $(this).val() 
+    Updater(query);
+
+    
+
+
+  $( "i:contains('close')").click(function(){
+    $("#search").val('');
+    Updater('empty_search_box')
+  })
+})
+
+
+
+
+
+
   $('#add_student_form').submit(function(e){
     e.preventDefault()
     var student_name = $('#student_name').val()

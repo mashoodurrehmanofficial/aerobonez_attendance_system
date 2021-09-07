@@ -293,8 +293,22 @@ def manage_students_attach_subject_to_profile(request):
         class_name=incmoing_class,
         standard_name = incoming_standard
     ).save()
-    
     return JsonResponse({})
+
+
+
+
+def manage_students_filter_by_name(request): 
+    query = request.GET['query'].strip()
+    students = list(Student.objects.filter(name__startswith=query).values('id')) 
+
+    if query=='empty_search_box':
+        print("empty")
+        students = list(Student.objects.all().values('id'))
+    return JsonResponse({"students":students})
+
+
+
 
 
 
