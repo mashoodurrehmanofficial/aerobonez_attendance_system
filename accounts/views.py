@@ -64,10 +64,10 @@ def login_page(request):
                 else:
                     return redirect('teacherpanel')
             else:
-                return render(request, 'accounts/login.html',{"page_title":"Login","error":"Maaf, email ataupun Password tidak sah"})
+                return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, invalid email or password detected. Please try again or reset password using the link below"})
         else:
             print("dont exists")
-            return render(request, 'accounts/login.html',{"page_title":"Login","error":"Maaf, email ataupun Password tidak sah"})
+            return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, invalid email or password detected. Please try again or reset password using the link below"})
     return render(request, 'accounts/login.html',{"page_title":"Login"})
 
 
