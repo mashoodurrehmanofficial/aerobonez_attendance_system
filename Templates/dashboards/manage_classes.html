@@ -8,16 +8,15 @@
 </style>
 
 <div style="margin:5px 20px">
-  <br>
   <center>
-    <h3><b>Urus Kelas</b></h3>
+    <h3><b>Manage Classes</b></h3>
   </center>
 
 <div class="row">
   <div class="col s6 l6 m6 select_standard"> 
-    <label>Tingkatan</label>
+    <label>Select Standard</label>
     <select name='standard' class="browser-default"  id="select_standard">
-        <option value="" disabled selected>Pilih Tingkatan</option>
+        <option value="" disabled selected>Select Standard</option>
         {% for standard  in standards %}
         <option value="{{standard}}">{{standard}}</option>
       {% endfor %}
@@ -27,7 +26,7 @@
   
   <div class="col s6 l6 m6">
     <div class="select_class" style="display: none">
-      <label>Pilih Kelas</label>
+      <label>Select Class</label>
       <select name='class' class="browser-default"  id="select_class">
       </select>
       <br>
@@ -41,13 +40,13 @@
   <!-- Modal Structure -->
   <div id="add_class_modal" class="modal">
     <div class="modal-content"> 
-      <h4><b>Tambah Kelas</b></h4>
+      <h4><b>Add Class</b></h4>
       <form action="" id="add_class_form">
         <div class="input-field ">
           <input id="class_val" name="class" type="text" class="validate" required>
-          <label for="class_val">Nama Kelas</label>
+          <label for="class_val">Class Name</label>
         </div>
-        <button type="submit" class="btn right">SEND</button>
+        <button type="submit" class="btn right">Submit</button>
       </form>
       <br><br>
     </div>
@@ -67,7 +66,7 @@
           </select>
           <br>
       </div>
-        <button type="submit" class="btn right">Tambah Pelajar ke Kelas</button>
+        <button type="submit" class="btn right">Add new Student to class</button>
       </form>
       <br><br>
     </div>
@@ -131,9 +130,9 @@
   <table class="striped display_class_students" style="display: none;">
     <thead>
       <tr>
-        <th>Bil.</th>
-        <th>Name Pelajar</th>
-        <th>Tindakan</th>
+        <th>Index</th>
+        <th>Student Name</th>
+        <th>Remove Student</th>
       </tr>
     </thead>
     <tbody id="display_class_students_tbody"> 

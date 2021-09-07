@@ -9,8 +9,7 @@
 
 <div style="margin:5px 20px">
   <center>
-    <br>
-    <h3><b>Laporan</b></h3>
+    <h3><b>Manage Reports</b></h3>
   </center>
 
 
@@ -19,11 +18,11 @@
     <div class="col s12 m4 l4">
       <form action="" id="absentreportform" style="border-radius: 10px ;" class="z-depth-2">
         <center> <br>
-        <h4>Laporan Tidak Hadir</h4>
+        <h4>Absent Report</h4>
         <div style="padding:20px 0px;">
-        <input id="absent_report_date" type="button" class="datepicker btn" value="Pilih Tarikh" required>
+        <input id="absent_report_date" type="button" class="datepicker btn" value="Select date" required>
         <br><br><br>
-        <button type="submit" class="white-text btn">Menjana Laporan</button>
+        <button type="submit" class="white-text btn">Generate Absent Reports</button>
         </div>
         </center>
 
@@ -40,11 +39,11 @@
 
       <form action="" id="dailyreportform" style="border-radius: 10px ;" class="z-depth-2">
         <center> <br>
-        <h4>Laporan Harian</h4>
+        <h4>One day Report</h4>
         <div style="padding:20px 0px;">
-        <input id="daily_report_date" type="button" class="datepicker btn" value="Pilih Tarikh" required>
+        <input id="daily_report_date" type="button" class="datepicker btn" value="Select date" required>
         <br><br><br>
-        <button type="submit" class="white-text btn">Menjana Laporan</button>
+        <button type="submit" class="white-text btn">Generate Attendance Reports</button>
         </div>
         </center>
 
@@ -59,13 +58,13 @@
       <form action="" id="weeklyreportform" style="border-radius: 10px ;" class="z-depth-2">
 
         <center> <br>
-        <h4>Laporan Mingguan</h4>
+        <h4>Weekly Report</h4>
         <div style="padding:20px 0px;">
           
-        <input id="start_date" type="button" class="datepicker btn" value="Pilih Tarikh" required>
-        <input id="end_date" type="button" class="datepicker btn" value="Pilih Tarikh" required>
+        <input id="start_date" type="button" class="datepicker btn" value="Select date" required>
+        <input id="end_date" type="button" class="datepicker btn" value="Select date" required>
         <br><br><br>
-        <button type="submit" class="white-text btn">Menjana Laporan</button>
+        <button type="submit" class="white-text btn">Generate Weekly Reports</button>
       
         </div>
         </center>
@@ -78,11 +77,11 @@
 
 
   <br><br><br><br><br><br><br><br><br><br>
-<center>
+
   <div class="col s12 m4 l4">
-    <a target="_blank" href="download_db" class="white-text btn grey darken-3">DB</a>
+    <a target="_blank" href="download_db" class="white-text btn grey darken-3">Download DB</a>
   </div>
-</center>
+
 
 
 </div>
@@ -99,7 +98,7 @@ $('#absentreportform').submit(function(e){
   e.preventDefault();
   var absent_report_date = $('.absent_report_date').val() 
   if(absent_report_date==''|| absent_report_date==undefined ){
-    alert("Sila Pilih Tarikh")
+    alert("Please select anyt date")
   }else{
     window.open( window.location+'generate_absent_report'+`/${absent_report_date}`, '_blank').focus();
   }
@@ -111,7 +110,7 @@ $('#dailyreportform').submit(function(e){
   e.preventDefault();
   var daily_report_date = $('.daily_report_date').val() 
   if(daily_report_date==''|| daily_report_date==undefined ){
-    alert("Sila Pilih Tarikh")
+    alert("Please select anyt date")
   }else{
     window.open( window.location+'generate_attendance_report'+`/${daily_report_date}`, '_blank').focus();
   }
@@ -128,7 +127,7 @@ $('#weeklyreportform').submit(function(e){
 
   
   if(start_date=='' || end_date==''||start_date==undefined || end_date==undefined){
-    alert("Sila Pilih Tarikh")
+    alert("Please select anyt date")
   }else{
     window.open( window.location+'generate_weekly_report'+`/${start_date}/${end_date}`, '_blank').focus();
   }

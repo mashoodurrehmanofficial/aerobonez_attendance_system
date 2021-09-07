@@ -1,12 +1,5 @@
 {% extends 'partials/dashboards/teacher_engine.html' %}
 {% block 'engine'%}
-<br>
-    <br>
-    <center>
-    <img width="160vw" ; height="160vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
-</center>    
-    <br>
-    <br>
 <style> 
       tbody td{padding: 8px !important;} 
   
@@ -32,13 +25,13 @@
     <table class="">
         <thead>
           <tr>
-              <th>Tingkatan</th>
-              <th>Kelas</th>
-              <th>Mata Pelajaran</th>
-              <th>Masa Kedatangan</th>
+              <th>Standard</th>
+              <th>Class</th>
+              <th>Subject</th>
+              <th>Attendance Time</th>
               <th>Edit</th>
-              <th>Muat Turun</th>
-              <th>Padam</th>
+              <th>Download</th>
+              <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -58,7 +51,7 @@
                     
 
                     <td><a  href="/dashboard/teacherpanel/load_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">edit</i></a></td>            
-                    <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">cloud_download</i></a></td>            
+                    <td><a  href="/dashboard/teacherpanel/pdf_attendance_sheet/{{report.report_uid}}" target="_blank"><i class="material-icons">download</i></a></td>            
                     <td><a  href="/dashboard/teacherpanel/delete_attendance_sheet/{{report.report_uid}}" ><i class="material-icons red-text">delete</i></a></td>            
                 </tr> 
             {% endfor %}  

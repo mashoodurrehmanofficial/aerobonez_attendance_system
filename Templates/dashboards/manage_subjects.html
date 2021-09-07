@@ -8,25 +8,24 @@
 </style>
 
 <div style="margin:5px 20px">
-  <br>
   <center>
-    <h3><b>Urus Mata Pelajaran</b></h3>
+    <h3><b>Manage Subjects</b></h3>
   </center>
 
 
-  <button id="add_subject_button" data-target="add_subject_modal" class="btn modal-trigger btn right">Tambah Mata Pelajaran   <i class="material-icons right">add</i> </button>
-  <button style="margin-right: 20px;display: none;" id="attach_subject_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Tambah Mata Pelajaran  <i class="material-icons right">link</i> </button>
+  <button id="add_subject_button" data-target="add_subject_modal" class="btn modal-trigger btn right">Add new Subject   <i class="material-icons right">add</i> </button>
+  <button style="margin-right: 20px;display: none;" id="attach_subject_button" data-target="attach_subject_modal" class="btn modal-trigger btn right">Attach new Subject  <i class="material-icons right">link</i> </button>
   <br>
   <!-- Modal Structure -->
   <div id="add_subject_modal" class="modal">
     <div class="modal-content"> 
-      <h4><b>Tambah Mata Pelajaran</b></h4>
+      <h4><b>Add new Subject</b></h4>
       <form action="" id="add_subject_form">
         <div class="input-field ">
           <input id="subject" name="subject" type="text" class="validate" required>
-          <label for="subject">Nama Mata Pelajaran</label>
+          <label for="subject">Subject Name</label>
         </div>
-        <button type="submit" class="btn right">Tambah Mata Pelajaran<i class="material-icons right">add</i> </button>
+        <button type="submit" class="btn right">Add Subject   <i class="material-icons right">add</i> </button>
       </form>
       <br><br>
     </div>
@@ -35,14 +34,14 @@
     <!-- Modal Structure -->
   <div id="attach_subject_modal" class="modal">
     <div class="modal-content"> 
-      <h4><b>Gabung Mata Pelajaran ke Tingkatan</b></h4>
+      <h4><b>Attach Subject to current standard</b></h4>
       <form action="" id="attach_subject_form">
         <div class="select_standard"> 
-          <label>Pilih Mata Pelajaran</label>
+          <label>Select Subject</label>
           <select name='subject' class="browser-default"  id="select_subject"> 
           </select>
         </div> <br>
-        <button type="submit" class="btn right">Gabung Mata Pelajaran <i class="material-icons right">link</i> </button>
+        <button type="submit" class="btn right">Attach Subject  <i class="material-icons right">link</i> </button>
       </form>
       <br><br>
     </div>
@@ -52,9 +51,9 @@
 
 
   <div class="select_standard"> 
-    <label>Tingkatan</label>
+    <label>Select Standard</label>
     <select name='standard' class="browser-default"  id="select_standard">
-        <option value="" disabled selected>Pilih Tingkatan</option>
+        <option value="" disabled selected>Select Standard</option>
         {% for standard  in standards %}
         <option value="{{standard}}">{{standard}}</option>
       {% endfor %}
@@ -68,9 +67,9 @@
   <table id="manage_subjects_fetched_subjects_table" class="striped" style="display: none;">
     <thead>
       <tr>
-        <th>Bil.</th>
-        <th>Mata Pelajaran</th>
-        <th>Tindakan</th>
+        <th>Index</th>
+        <th>Subject Name</th>
+        <th>Remove Subject</th>
       </tr>
     </thead>
 
@@ -93,7 +92,7 @@ function RENDER_TABLE_AND_SELECT_MENU(data){
   $("#manage_subjects_fetched_subjects_tbody").html("") 
   $("#add_subject_button").show() 
   $("select#select_subject").html("")
-  $("select#select_subject").append(`<option value="" disabled selected>Gabung Mata Pelajaran ke Tingkatan</option>  `)
+  $("select#select_subject").append(`<option value="" disabled selected>Attach other Subject to Standard</option>  `)
 
   for(var i=0;i<other_subjects.length;i++){
     $("select#select_subject").append(`

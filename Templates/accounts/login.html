@@ -19,22 +19,34 @@
   </center>
   
 <div class="container" >
+  
+
+ 
+    
+
     <form action="/account/login" method="post" class='z-depth-2'  style="padding: 20px;border-radius: 10px;"> {% csrf_token %}
+      
       <center>
         <img width="80vw" ; height="80vh" src="{{ STATIC_URL }}/Static/images/logo.png" alt="">
-        <h3><b>Login</b></h3>
+        <h3><b>Login Form</b></h3>
       </center>
         <div class="input-field ">
             <input id="email" type="email" name="email" class="validate">
             <label for="email">Email</label>
           </div>
+
           <div class="input-field ">
             <input id="password" type="text" name="password" class="validate">
             <label for="password">Password</label>
           </div>
-        <a href="/account/forgot_password"> <u> Forgot Password</u> </a>
-        <button class="btn nextbtn right" >Login</button><br><br>
+        <a href="/account/forgot_password"> <u> I forgot my password</u> </a>
+        <button class="btn nextbtn right" >Login</button>
+
+<br><br>
+
     </form>
+  
+  
 </div>
 </div>
 

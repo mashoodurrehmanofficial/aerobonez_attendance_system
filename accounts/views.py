@@ -64,10 +64,10 @@ def login_page(request):
                 else:
                     return redirect('teacherpanel')
             else:
-                return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, invalid email or password detected. Please try again or reset password using "Forget Password""})
+                return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, email or password is incorrect !"})
         else:
             print("dont exists")
-            return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, invalid email or password detected. Please try again or reset password using "Forget Password""})
+            return render(request, 'accounts/login.html',{"page_title":"Login","error":"Sorry, email or password is incorrect !"})
     return render(request, 'accounts/login.html',{"page_title":"Login"})
 
 
@@ -101,7 +101,7 @@ def forgot_password(request):
             SEND_MESSAGE(email,f"http://54.255.3.66:8000//account/reset_password/{code}")
             return redirect("message_page")
         else:
-            return render(request, 'accounts/forgot_password.html',{"error":"Emael tersebut tidak wujud di database kami!"})
+            return render(request, 'accounts/forgot_password.html',{"error":"Given Email doesn't exists in database !"})
     return render(request,'accounts/forgot_password.html')
 
 
