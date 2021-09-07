@@ -35,6 +35,7 @@ def mark_attendance(request):
     standards = Standard.objects.all()
     standards = [x.name for x in standards]
     if request.method=='POST': 
+
         incoming_teacher = request.POST['teacher']
         incoming_standard = request.POST['standard']
         incoming_class = request.POST['class']
@@ -44,11 +45,12 @@ def mark_attendance(request):
             subject__name=incoming_subject,standard_name=incoming_standard,class_name=incoming_class).order_by('student__name')
         
         students = [[x.student.name,x.student.uid] for x in students] 
-        ids = [int(x[-1]) for x in students]
+        ids = [int(x[-1]) for x in students] 
         return render(request, 'dashboards/attendance_sheet.html',{
             'students':students,'ids':ids,'teacher':incoming_teacher,'standard':incoming_standard,
             'class':incoming_class,'subject':incoming_subject,'teacher':teacher
         })
+    print(1)
     return render(request, 'dashboards/mark_attendance.html',{"teacher":teacher,'standards':standards})
 
 
