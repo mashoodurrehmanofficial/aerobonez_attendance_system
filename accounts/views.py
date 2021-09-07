@@ -68,7 +68,7 @@ def login_page(request):
         else:
             print("dont exists")
             return render(request, 'accounts/login.html',{"page_title":"Login","error":"Maaf, email ataupun kata laluan tidak sah"})
-    return render(request, 'accounts/login.html',{"page_title":"Log Masuk"})
+    return render(request, 'accounts/login.html',{"page_title":"Login"})
 
 
 
