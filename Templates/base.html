@@ -56,16 +56,22 @@
  
 
 
-
     html,
     body {
       height: 100% !important;
     }
-
+    body{
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+  }
+  footer{
+      margin-top: auto !important;
+  }
 
     header,
     main,footer {
-      padding-left: 0;
+      padding-left: 250px;
     }
 
     @media only screen and (max-width : 992px) {
