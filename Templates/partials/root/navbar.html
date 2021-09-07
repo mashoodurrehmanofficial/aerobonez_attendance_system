@@ -15,7 +15,7 @@
               {% if user.is_superuser %}
               <li><a href="/dashboard/views_admin_panel_db_operations/manage_standards/">Dashboard</a></li>
               {% else %}
-              <li><a href="/dashboard/teacherpanel">Dewan Guru</a></li>
+              <li><a href="/dashboard/teacherpanel">Headquarters</a></li>
               {% endif %}
 
               <li><a href="/account/logout">Log Keluar</a></li>
@@ -52,7 +52,7 @@
 
 
   {% else %}
-  <li><a href="/dashboard/teacherpanel">Dewan Guru</a></li>
+  <li><a href="/dashboard/teacherpanel">Headquarters</a></li>
   <li class=""><a href="/dashboard/mark_attendance"><i class="material-icons  red-text">done</i>Tanda Kehadiran</a></li>
   <li class=""><a href="/dashboard/view_attendance_directory"><i class="material-icons  red-text">content_paste</i>Uruskan Kehadiran</a></li>
   {% endif %}
