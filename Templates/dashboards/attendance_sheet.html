@@ -33,43 +33,35 @@
 </style>
 <br>
 
-
-
+<center>
+    <h5><b><u>{{standard}}</u></b> > <b><u>{{class}}</u></b> > <b><u>{{subject}}</u></b></h5> 
+</center>
+<br>
 <div style="margin:10px  10px" >
   <div class="row">
+      <div class="col s12 l3 m3">
+          <input type="button" class="datepicker btn" value="Select date"><br><br>
+        </div>
     <div class="col s12 l3 m3">
-      <button id="mark_all_present" class="btn">Mark all Present</button>  <br><br>
+      <button id="mark_all_present" class="btn">SEMUA HADIR</button>  <br><br>
     </div>
-
     <div class="col s12 l3 m3">
-      <button id="mark_all_late" class="btn grey darken-3">Mark all Late</button>  <br><br>
+      <button id="mark_all_late" class="btn grey darken-3">SEMUA LAMBAT HADIR</button>  <br><br>
     </div>
-
     <div class="col s12 l3 m3">
-      <button id="mark_all_absent" class="btn red">Mark all Absent</button>  <br><br>
-    </div>
-
-
-
-    <div class="col s12 l3 m3">
-      <input type="button" class="datepicker btn" value="Select date">
-
+      <button id="mark_all_absent" class="btn red">SEMUA TIDAK HADIR</button>  <br><br>
     </div>
   </div>
-
-  <p>
-    <span><b><u>{{standard}}</u></b> > <b><u>{{class}}</u></b> > <b><u>{{subject}}</u></b></span> 
-  </p>
-
-    <form action="/dashboard/submit_attendance_sheet" method="POST"> {% csrf_token %}
+<center>
+  <form action="/dashboard/submit_attendance_sheet" method="POST"> {% csrf_token %}
     <table class="bordered">
         <thead>
           <tr>
-              <th style="text-align:center !important">Index</th>
-              <th style="width:70% !important">Name</th>
-              <th>Present</th>
-              <th>Late</th>
-              <th>Absent</th>
+              <th style="text-align:center !important">Bil.</th>
+              <th style="width:70% !important">Nama Pelajar</th>
+              <th>Hadir</th>
+              <th>Lambat Hadir</th>
+              <th>Tidak Hadir</th>
           </tr>
         </thead> 
         <tbody>
@@ -113,11 +105,10 @@
       <input type="text" name="subject" id="{{subject}}" value="{{subject}}" style="width:1px ; height:1px !important"> 
       <input type="text" name="data" id="data" style="width:1px ; height:1px !important">
       <input type="text"  id="date"  name="date" style="width:1px ; height:1px !important">
-      <button class="btn" type="submit">Submit</button>
+      <button class="btn" type="submit">Hantar</button>
       <br>
       <br>
     </form>
-
 
 
 </div>
