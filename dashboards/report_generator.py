@@ -14,17 +14,23 @@ from datetime import datetime
 from dateutil import parser
 
 from django.db.models import Q
-
+reports_folder = os.path.join(os.getcwd(),'Reports')
 
 reports_folder = os.path.join(os.getcwd(),'Reports')
 if not os.path.exists(reports_folder):os.makedirs(reports_folder)
- 
   
+def report_folder_generator():
+    reports_folder = os.path.join(os.getcwd(),'Reports')
+    if not os.path.exists(reports_folder):os.makedirs(reports_folder)
+    
+
   
 
 def absent_report_generator(absent_report_date):
-    
     reports_folder = os.path.join(os.getcwd(),'Reports')
+    shutil.rmtree(reports_folder)
+    report_folder_generator()
+    
     if not os.path.exists(reports_folder):os.makedirs(reports_folder)
  
   
@@ -61,7 +67,6 @@ def absent_report_generator(absent_report_date):
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    shutil.rmtree(reports_folder)
     return response
 
 
@@ -70,6 +75,8 @@ def absent_report_generator(absent_report_date):
 
 def attendance_report_generator(daily_report_date):  
     reports_folder = os.path.join(os.getcwd(),'Reports')
+    shutil.rmtree(reports_folder)
+    report_folder_generator()
     if not os.path.exists(reports_folder):os.makedirs(reports_folder)
     # today_date_object =   parser.parse(str(datetime.now().date())).date() 
 
@@ -137,12 +144,15 @@ def attendance_report_generator(daily_report_date):
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    shutil.rmtree(reports_folder)
+    # shutil.rmtree(reports_folder)
     return response
 
 
     
 def weekly_absent_report_generator(start_date,end_date,red_zone): 
+    # shutil.rmtree(reports_folder)
+    shutil.rmtree(reports_folder)
+    report_folder_generator()
 
     # start_date = parser.parse("September 01, 2021").date()
     # end_date = parser.parse("September 08, 2021").date()
@@ -150,7 +160,7 @@ def weekly_absent_report_generator(start_date,end_date,red_zone):
     # red_zone = 40
     absent_report_data =[]
     students = Student.objects.all()
-    for student in students[:5]:
+    for student in students[:]:
         total_classes_marked = data.filter(student_name=student.name)
         if total_classes_marked.exists():
             total_absents = total_classes_marked.filter(attendance_status="Absent").count()
@@ -177,7 +187,7 @@ def weekly_absent_report_generator(start_date,end_date,red_zone):
             print(f"{total_classes_marked} - {total_absents} = {total_classes_marked-total_absents} =>",  str(percentage)+ " % ")
             
 
-    headers = ["Student Name","Percentage","Maximum Limit",'Parent1','Relation1','Telephone1','Parent2','Relation2','Telephone2','House number']
+    headers = ["Student Name","Absent Percentage","Maximum Limit",'Parent1','Relation1','Telephone1','Parent2','Relation2','Telephone2','House number']
     df = pd.DataFrame(data=absent_report_data,columns=headers)
     file_name = 'Weekly Absent report data '+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.csv'
     file = os.path.join(reports_folder,file_name)
@@ -186,7 +196,6 @@ def weekly_absent_report_generator(start_date,end_date,red_zone):
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    # shutil.rmtree(reports_folder)
     return response
 
 
@@ -201,6 +210,8 @@ def weekly_absent_report_generator(start_date,end_date,red_zone):
 
 def weekly_report_generator(start_date,end_date): 
     reports_folder = os.path.join(os.getcwd(),'Reports')
+    shutil.rmtree(reports_folder)
+    report_folder_generator()
     if not os.path.exists(reports_folder):os.makedirs(reports_folder)
     today_date_object =   parser.parse(str(datetime.now().date())).date()
     # start_date = parser.parse("August 23, 2021").date()
@@ -275,7 +286,7 @@ def weekly_report_generator(start_date,end_date):
     wrapper = FileWrapper(open(file, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-    shutil.rmtree(reports_folder)
+    # shutil.rmtree(reports_folder)
     return response
 
 

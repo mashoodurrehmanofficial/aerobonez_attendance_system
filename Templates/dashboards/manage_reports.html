@@ -133,6 +133,7 @@ $('#absentreportform').submit(function(e){
     alert("Sila Pilih Tarikh")
   }else{
     window.open( window.location+'generate_absent_report'+`/${absent_report_date}`, '_blank').focus();
+    location.reload()
   }
 })
 
@@ -145,6 +146,7 @@ $('#dailyreportform').submit(function(e){
     alert("Sila Pilih Tarikh")
   }else{
     window.open( window.location+'generate_attendance_report'+`/${daily_report_date}`, '_blank').focus();
+    location.reload()
   }
 })
 
@@ -160,6 +162,7 @@ $('#weeklyreportform').submit(function(e){
     alert("Sila Pilih Tarikh")
   }else{
     window.open( window.location+'generate_weekly_report'+`/${start_date}/${end_date}`, '_blank').focus();
+    location.reload()
   }
 })
 
@@ -177,7 +180,7 @@ $('#weeklyabsentreportform').submit(function(e){
         alert("Percentage can be between 0 and 100")
       }else{
         window.open( window.location+'generate_weekly_absent_report'+`/${start_date}/${end_date}/${red_zone}`, '_blank').focus();
-
+        location.reload()
       }
   }
 })
