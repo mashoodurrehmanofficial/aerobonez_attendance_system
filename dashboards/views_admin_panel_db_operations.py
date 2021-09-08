@@ -463,6 +463,18 @@ def generate_weekly_report(request,start_date,end_date):
         
 
      
+def generate_weekly_absent_report(request,start_date,end_date,red_zone): 
+    start_date = parser.parse(start_date).date()
+    end_date = parser.parse(end_date).date()
+    time_start_date = time.mktime(start_date.timetuple())
+    time_end_date = time.mktime(end_date.timetuple())
+    if time_end_date>time_start_date: 
+        return weekly_absent_report_generator(start_date,end_date,red_zone)
+    else:
+        return HttpResponse("<h2>Please use valid Date Range")
+        
+
+     
 
 
 

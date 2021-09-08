@@ -142,6 +142,63 @@ def attendance_report_generator(daily_report_date):
 
 
     
+def weekly_absent_report_generator(start_date,end_date,red_zone): 
+
+    # start_date = parser.parse("September 01, 2021").date()
+    # end_date = parser.parse("September 08, 2021").date()
+    data = AttendanceReport.objects.filter(submit_date_field__range=[start_date,end_date]).order_by('standard').distinct()
+    # red_zone = 40
+    absent_report_data =[]
+    students = Student.objects.all()
+    for student in students[:5]:
+        total_classes_marked = data.filter(student_name=student.name)
+        if total_classes_marked.exists():
+            total_absents = total_classes_marked.filter(attendance_status="Absent").count()
+            total_classes_marked = total_classes_marked.count()
+            if total_absents==0:percentage = round(0,2)*100
+            else:   
+                percentage = (total_absents/total_classes_marked)*100
+                percentage = round(percentage,2)
+            if percentage>float(red_zone):
+                new_record = [
+                    student.name,
+                    str(percentage)+ " % ",
+                    str(red_zone)+ " % ",
+
+                    student.parent1,
+                    student.relation1,
+                    student.telephone1,
+                    student.parent2,
+                    student.relation2,
+                    student.telephone2,
+                    student.house_number
+                ]
+                absent_report_data.append(new_record)
+            print(f"{total_classes_marked} - {total_absents} = {total_classes_marked-total_absents} =>",  str(percentage)+ " % ")
+            
+
+    headers = ["Student Name","Percentage","Maximum Limit",'Parent1','Relation1','Telephone1','Parent2','Relation2','Telephone2','House number']
+    df = pd.DataFrame(data=absent_report_data,columns=headers)
+    file_name = 'Weekly Absent report data '+str(datetime.now().strftime("%m-%d-%Y  %H-%M-%S"))+'.csv'
+    file = os.path.join(reports_folder,file_name)
+    df.to_csv(file,index=False) 
+ 
+    wrapper = FileWrapper(open(file, 'rb'))
+    response = HttpResponse(wrapper, content_type='application/force-download')
+    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+    # shutil.rmtree(reports_folder)
+    return response
+
+
+
+
+
+
+
+
+
+
+
 def weekly_report_generator(start_date,end_date): 
     reports_folder = os.path.join(os.getcwd(),'Reports')
     if not os.path.exists(reports_folder):os.makedirs(reports_folder)
